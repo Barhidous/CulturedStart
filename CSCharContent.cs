@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Core;
+using System.Reflection;
 using StoryMode;
 using StoryMode.CharacterCreationSystem;
 using TaleWorlds.Localization;
@@ -28,20 +29,23 @@ namespace zCulturedStart
         }
         private static void CSDefaultOnConsequence(CharacterCreation characterCreation)
         {
-
+            CSCharCreationOption.CSWithFamily = true;
+            CSCharCreationOption.SkipFolly = false;
         }
         private static void CSDefaultOnApply(CharacterCreation characterCreation)
         {
-            CSCharCreationOption.CSWithFamily = true;
+                       
         }
             
         //use to set flags for alt starts
         private static void CSHistoryOnConsequence(CharacterCreation characterCreation)
         {
+            CSCharCreationOption.SkipFolly = true;
+            CSCharCreationOption.CSWithFamily = false;
         }
         private static void CSHistoryOnApply(CharacterCreation characterCreation)
         {
-            CSCharCreationOption.SkipFolly = true;          
+           
         }
         //Not using right now investigate if anything has to happen
         private static void BranchsOnInit(CharacterCreation characterCreation)

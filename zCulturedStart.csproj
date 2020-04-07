@@ -212,6 +212,8 @@
     <Compile Include="CSCharCreationPatch.cs" />
     <Compile Include="CSCharCreationOption.cs" />
     <Compile Include="CSCharContent.cs" />
+    <Compile Include="CSEscapePatch.cs" />
+    <Compile Include="CSTalkWithNoblePatch.cs" />
     <Compile Include="CulturedStartInit.cs" />
     <Compile Include="CulturedStartLocation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
