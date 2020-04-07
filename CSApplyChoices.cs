@@ -21,7 +21,8 @@ namespace zCulturedStart
             if (CSCharCreationOption.SkipFolly)
             {
                 Hero brother = StoryMode.StoryMode.Current.MainStoryLine.Brother;
-                brother.ChangeState(Hero.CharacterStates.Dead);
+                KillCharacterAction.ApplyByMurder(brother,null,false);
+                //brother.ChangeState(Hero.CharacterStates.Dead);
                 //string test2 = typeof(CSCharCreationOption).FullName;
                 //string test = typeof(BannerInvestigationQuestBehavior).FullName;
                 //Type testtype = typeof(CSApplyChoices).Assembly.GetType("CSCharCreationOption");

@@ -81,9 +81,10 @@ namespace zCulturedStart
             @object.ModifyPlayersFamilyAppearance(randomBodyProperties.StaticProperties);
             @object.DynamicBodyProperties = randomBodyProperties.DynamicProperties;
             list.Add(new FaceGenChar(bodyProperties, new Equipment(), CharacterObject.PlayerCharacter.IsFemale, "act_childhood_schooled"));
+            
             //
             if (CSCharCreationOption.CSWithFamily) {
-                
+
                 list.Add(new FaceGenChar(@object.BodyProperties, new Equipment(), @object.CharacterObject.IsFemale, "act_brotherhood_schooled"));
                 characterCreation.ChangeFaceGenChars(list);
                 characterCreation.ChangeCharsAnimation(new List<string>
