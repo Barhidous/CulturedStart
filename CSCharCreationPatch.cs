@@ -26,7 +26,7 @@ namespace zCulturedStart
             CharacterCreationContent.AddAdulthoodMenu(characterCreation);
             CultureStartOptions.AddStartOption(characterCreation);
             CharacterCreationContent.Instance.GetType().GetMethod("AddEscapeMenu", BindingFlags.NonPublic | BindingFlags.Static).Invoke(CharacterCreationContent.Instance, new object[] {characterCreation});
-            //CultureStartOptions.AddStartOption2(characterCreation);
+            CultureStartOptions.AddStartLocation(characterCreation);
             return false;
 
         }

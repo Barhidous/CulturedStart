@@ -18,7 +18,7 @@ namespace zCulturedStart
     {private static bool Prefix(CharacterCreation characterCreation)
         {
             TextObject backstory;
-            if (CSCharCreationOption.CSWithFamily)
+            if (CSCharCreationOption.CSSelectOption==1)
             {
                 backstory = new TextObject("{=jg3T5AyE} Along the way, the inn at which you were staying was attacked by raiders. Your parents were slain and your two youngest siblings seized, but you and your brother survived because...", null);
             }
@@ -83,7 +83,7 @@ namespace zCulturedStart
             list.Add(new FaceGenChar(bodyProperties, new Equipment(), CharacterObject.PlayerCharacter.IsFemale, "act_childhood_schooled"));
             
             //
-            if (CSCharCreationOption.CSWithFamily) {
+            if (CSCharCreationOption.CSSelectOption == 1) {
 
                 list.Add(new FaceGenChar(@object.BodyProperties, new Equipment(), @object.CharacterObject.IsFemale, "act_brotherhood_schooled"));
                 characterCreation.ChangeFaceGenChars(list);
@@ -120,7 +120,7 @@ namespace zCulturedStart
         // ***Edited from base game***
         private static void ChangeStoryStageEquipments(CharacterCreation characterCreation)
         {
-            if (CSCharCreationOption.CSWithFamily)
+            if (CSCharCreationOption.CSSelectOption == 1)
             {
                 characterCreation.ChangeCharactersEquipment(new List<Equipment>
             {
@@ -143,7 +143,7 @@ namespace zCulturedStart
         private static void EscapeSubdueRaiderOnConsequence(CharacterCreation characterCreation)
         {
             List<string> Anims = new List<string>();            
-            if (CSCharCreationOption.CSWithFamily)
+            if (CSCharCreationOption.CSSelectOption == 1)
             {
                 Anims.Add("act_childhood_gracious");
                 Anims.Add("act_brotherhood_ready");                
@@ -166,7 +166,7 @@ namespace zCulturedStart
         private static void EscapeDrawArrowsOnConsequence(CharacterCreation characterCreation)
         {
             List<string> Anims = new List<string>();
-            if (CSCharCreationOption.CSWithFamily)
+            if (CSCharCreationOption.CSSelectOption == 1)
             {
                 Anims.Add("act_childhood_ready");
                 Anims.Add("act_brotherhood_fierce");
@@ -184,7 +184,7 @@ namespace zCulturedStart
         {
             
             List<string> Anims = new List<string>();
-            if (CSCharCreationOption.CSWithFamily)
+            if (CSCharCreationOption.CSSelectOption == 1)
             {
                 Anims.Add("act_childhood_fox");
                 Anims.Add("act_brotherhood_gracious");
@@ -201,7 +201,7 @@ namespace zCulturedStart
         {
             
             List<string> Anims = new List<string>();
-            if (CSCharCreationOption.CSWithFamily)
+            if (CSCharCreationOption.CSSelectOption == 1)
             {
                 Anims.Add("act_childhood_tough");
                 Anims.Add("act_brotherhood_clever");
@@ -218,7 +218,7 @@ namespace zCulturedStart
         {
             
             List<string> Anims = new List<string>();
-            if (CSCharCreationOption.CSWithFamily)
+            if (CSCharCreationOption.CSSelectOption == 1)
             {
                 Anims.Add("act_childhood_schooled");
                 Anims.Add("act_brotherhood_manners");

@@ -18,40 +18,36 @@ namespace zCulturedStart
     [HarmonyPatch(typeof(TrainingFieldCampaignBehavior), "OnCharacterCreationIsOver")]
     public class CulturedStartLocPatch
               {
-        public static Vec2 GetSettlementLoc() //This is to get the vector of a HC settlement...Possible Todo Home town
+        public static Vec2 GetSettlementLoc(Settlement settlement) //This is to get the vector of a HC settlement...Possible Todo Home town
         {
-            Vec2 sresult;
-            Settlement settlement;
-            string sCulture = Hero.MainHero.MapFaction.Culture.StringId;
-            switch (sCulture)
+            return settlement.GatePosition;
+        }
+        private static Settlement CSOptionSettlement()
+        {
+            int opt = CSCharCreationOption.CSLocationOption;
+            switch (opt)
             {
-                case "sturgia":
-                    settlement = Settlement.Find("town_S2");
-                    sresult = settlement.GatePosition;
-                    break;
-                case "aserai":
-                    settlement = Settlement.Find("town_A8");
-                    sresult = settlement.GatePosition;
-                    break;
-                case "vlandia":
-                    settlement = Settlement.Find("town_V3");
-                    sresult = settlement.GatePosition;
-                    break;
-                case "battania":
-                    settlement = Settlement.Find("town_B2");
-                    sresult = settlement.GatePosition;
-                    break;
-                case "khuzait":
-                    settlement = Settlement.Find("town_K4");
-                    sresult = settlement.GatePosition;
-                    break;
-                default:                    
-                    settlement = Settlement.Find("tutorial_training_field");
-                    sresult = settlement.GatePosition;
-                    break;
-                    
+                case 0:
+                    return CSCharCreationOption.cultureSettlement(Hero.MainHero);
+                case 1:
+                    return CSCharCreationOption.RandcultureSettlement();
+                case 2:
+                    return Settlement.Find("town_A8");
+                case 3:
+                    return Settlement.Find("town_B2");
+                case 4:
+                    return Settlement.Find("town_EW2");
+                case 5:
+                    return Settlement.Find("town_S2");
+                case 6:
+                    return Settlement.Find("town_K4");
+                case 7:
+                    return Settlement.Find("town_V3");
+                default:
+                    return Settlement.Find("tutorial_training_field");
             }
-            return sresult;
+
+
         }
         private static bool Prefix(CampaignBehaviorBase __instance)
         {
@@ -59,7 +55,7 @@ namespace zCulturedStart
             Hero brother = StoryMode.StoryMode.Current.MainStoryLine.Brother;
             PartyBase.MainParty.MemberRoster.RemoveTroop(brother.CharacterObject, 1, default(UniqueTroopDescriptor), 0);
             StoryMode.StoryMode.Current.MainStoryLine.CompleteTutorialPhase(true);
-            Vec2 StartPos = GetSettlementLoc();
+            Vec2 StartPos = GetSettlementLoc(CSOptionSettlement());
             MobileParty.MainParty.Position2D = StartPos;
             MapState mapstate;
             mapstate = (GameStateManager.Current.ActiveState as MapState);
@@ -68,6 +64,7 @@ namespace zCulturedStart
             CSApplyChoices.UpdateNezzyFolly();
             return false;
         }
+        
         private static void SelectClanName()
         {
             InformationManager.ShowTextInquiry(new TextInquiryData(new TextObject("{=JJiKk4ow}Select your family name: ", null).ToString(), string.Empty, true, false, GameTexts.FindText("str_done", null).ToString(), null, new Action<string>(OnChangeClanNameDone), null, false, new Func<string, bool>(IsNewClanNameApplicable), ""), false);

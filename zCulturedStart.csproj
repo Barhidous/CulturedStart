@@ -216,6 +216,7 @@
     <Compile Include="CSTalkWithNoblePatch.cs" />
     <Compile Include="CulturedStartInit.cs" />
     <Compile Include="CulturedStartLocation.cs" />
+    <Compile Include="CSPatchApplyCulture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
