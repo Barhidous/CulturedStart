@@ -61,7 +61,7 @@ namespace zCulturedStart
             mapstate = (GameStateManager.Current.ActiveState as MapState);
             mapstate.Handler.TeleportCameraToMainParty();
             SelectClanName();
-            CSApplyChoices.UpdateNezzyFolly();
+            CSApplyChoices.ApplyStoryOptions();
             return false;
         }
         

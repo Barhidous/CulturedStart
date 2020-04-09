@@ -23,7 +23,7 @@ namespace zCulturedStart
         {
                      
             
-            if (CSCharCreationOption.CSSelectOption == 2)
+            if (CSCharCreationOption.CSGameOption == 1)
             {
                 __instance.GetType().GetField("_allNoblesDead", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, true);
             }

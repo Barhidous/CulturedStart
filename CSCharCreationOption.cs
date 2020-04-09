@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using StoryMode.CharacterCreationSystem;
 
@@ -13,34 +14,10 @@ namespace zCulturedStart
 {
     public class CSCharCreationOption
     {
-        // if true skip quest stages on load
-        //private static bool _SkipFolly;
-        //public static bool SkipFolly
-        //{
-          //  get 
-           // { 
-            //  return _SkipFolly; 
-           // }
-           // set
-           // {
-           //     _SkipFolly = value;
-           // }
-        //}
-      //  private static bool _CSWithFamily;
-      //  public static bool CSWithFamily
-      //  {
-           // get
-           // {
-           //     return _CSWithFamily;
-           // }
-           // set
-            //{
-                //_CSWithFamily = value;
-            //}
-       // }
+        
         private static int _CSSelcOption;
 
-        // 1 = Default 2 = SkipFolly 3 = Exiled
+        // 1 = Default 2 = merchant 3 = Exiled 4 = merc 5 = looter
         public static int CSSelectOption
         {
             get
@@ -52,8 +29,25 @@ namespace zCulturedStart
                 _CSSelcOption = value;
             }
         }
+        private static int _CSGameOption;
 
+        
+
+        
+        // 0 = FP default 1 = Fp nezzy 2 = fp sandbox 3 = default 4= nezzy 5 = sandbox no kingdom
+        public static int CSGameOption
+        {
+            get
+            {
+                return _CSGameOption;
+            }
+            set
+            {
+                _CSGameOption = value;
+            }
+        }
         private static int _CSLocationOption;
+
 
         // 0 = home town 1 = Random location 2 - 8 = specific town
         public static int CSLocationOption
@@ -116,28 +110,11 @@ namespace zCulturedStart
         public static Settlement RandcultureSettlement()
         {
             //var result;
-            Random rnd = new Random();
-            int city = rnd.Next(5);
-            switch (city)
-            {
-
-                case 0 :
-                    return Settlement.Find("town_S2");
-                case 1:
-                    return Settlement.Find("town_A8");
-                case 2:
-                    return Settlement.Find("town_V3");
-                case 3:
-                    return Settlement.Find("town_B2");
-                case 4:
-                    return Settlement.Find("town_K4");
-                case 5:
-                    return Settlement.Find("town_EW2");
-                default:
-                    return Settlement.Find("defaultcastle_village_ES1_2");
-
-
-            }
+            
+            return Settlement.FindAll((Settlement x) => x.IsTown).GetRandomElement<Settlement>();
+            
         }
+        
+
     }
 }

@@ -18,7 +18,7 @@ namespace zCulturedStart
     {private static bool Prefix(CharacterCreation characterCreation)
         {
             TextObject backstory;
-            if (CSCharCreationOption.CSSelectOption==1)
+            if (CSCharCreationOption.CSGameOption==0)
             {
                 backstory = new TextObject("{=jg3T5AyE} Along the way, the inn at which you were staying was attacked by raiders. Your parents were slain and your two youngest siblings seized, but you and your brother survived because...", null);
             }

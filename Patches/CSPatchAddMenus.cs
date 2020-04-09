@@ -15,18 +15,18 @@ namespace zCulturedStart
     [HarmonyPatch(typeof(CharacterCreationContent), "AddMenus")]
     class CSCharCreationPatch
     {
-        private static bool Prefix(CharacterCreation characterCreation, CharacterCreationContent __instance)
+        private static bool Prefix(CharacterCreation characterCreation)
         //private static void Test(CharacterCreation characterCreation)
         {
-            
+            CultureStartOptions.AddGameOption(characterCreation);
             CharacterCreationContent.AddParentsMenu(characterCreation);
             CharacterCreationContent.AddChildhoodMenu(characterCreation);
             CharacterCreationContent.AddEducationMenu(characterCreation);
             CharacterCreationContent.AddYouthMenu(characterCreation);
             CharacterCreationContent.AddAdulthoodMenu(characterCreation);
-            CultureStartOptions.AddStartOption(characterCreation);
-            CharacterCreationContent.Instance.GetType().GetMethod("AddEscapeMenu", BindingFlags.NonPublic | BindingFlags.Static).Invoke(CharacterCreationContent.Instance, new object[] {characterCreation});
-            CultureStartOptions.AddStartLocation(characterCreation);
+            //CultureStartOptions.AddStartOption(characterCreation, CharacterCreationContent.Instance);
+            
+            //CultureStartOptions.AddStartLocation(characterCreation);
             return false;
 
         }
