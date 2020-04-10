@@ -34,7 +34,7 @@ namespace zCulturedStart
             characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} A noble of " + CharacterCreationContent.Instance.Culture.StringId + " in exile", null), new List<SkillObject> { DefaultSkills.Leadership }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSExileOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}Forced into exile after your parents were executed for suspected treason. With only your family's bodyguard you set off. Should you return you'd be viewed as a criminal.", null), null, 0, 150, 0);
 
             //Mercanary start            
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH}In a failing mercenary company", null), new List<SkillObject> { DefaultSkills.Tactics }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(MercenaryOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}With men deserting over lack of wages, your company leader was found dead you were elected to lead", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH}In a failing mercenary company", null), new List<SkillObject> { DefaultSkills.Tactics }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(MercenaryOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}With men deserting over lack of wages, your company leader was found, and you decided to take you chance and lead", null), null, 0, 50, 0);
             
             //Looter start
             characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH}A looter lowlife.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSLooterOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}Left impoverished from war, you found a group of like minded ruffians who desperate to get by", null), null, 0, 0, 0);
@@ -76,19 +76,15 @@ namespace zCulturedStart
             characterCreation.ChangeFaceGenChars(list);
             //Doing this to add menus late to allow previous selections to work. But have to make sure it's not already added. No good way in menu class so forced to use text
             TextObject backstory;
-            if (CSCharCreationOption.CSGameOption == 0)
-            {
-                backstory = new TextObject("{=jg3T5AyE} Along the way, the inn at which you were staying was attacked by raiders. Your parents were slain and your two youngest siblings seized, but you and your brother survived because...", null);
-            }
-            else
-            {
-                backstory = new TextObject("{=jg3T5AyE} During your journies you were ambushed by raiders you survived because...", null);
-            }
+            TextObject backstory2;           
+            backstory = new TextObject("{=jg3T5AyE} Along the way, the inn at which you were staying was attacked by raiders. Your parents were slain and your two youngest siblings seized, but you and your brother survived because...", null);            
+            backstory2 = new TextObject("{=jg3T5AyE} During your journies you were ambushed by raiders you survived because...", null);
+            
             List<CharacterCreationMenu> CurMenus = (List<CharacterCreationMenu>)AccessTools.Field(typeof(CharacterCreation), "CharacterCreationMenu").GetValue(characterCreation);
             bool loaded = false;
             foreach (CharacterCreationMenu x in CurMenus)
             {
-                if (x.Text.ToString() == backstory.ToString())
+                if (x.Text.ToString() == backstory.ToString() || x.Text.ToString() == backstory2.ToString())
                 {
                     loaded = true;
                     break;
@@ -118,8 +114,21 @@ namespace zCulturedStart
         }
         private static void GameOptionOnInit(CharacterCreation characterCreation)
         {
-           
-            
+            List<CharacterCreationMenu> CurMenus = (List<CharacterCreationMenu>)AccessTools.Field(typeof(CharacterCreation), "CharacterCreationMenu").GetValue(characterCreation);
+            bool loaded = false;
+            foreach (CharacterCreationMenu x in CurMenus)
+            {
+                if (x.Text.ToString() == "Who are you in Caldaria...")
+                {
+                    loaded = true;
+                    break;
+                }
+            };
+            if (!loaded)
+            {
+                AddStartOption(characterCreation);
+            }
+
         }
         private static void FPDefaultOnConsequence(CharacterCreation characterCreation)
         {
@@ -149,7 +158,7 @@ namespace zCulturedStart
         {
             //Default option CSDefault
             //CSCharCreationOption csOptions;
-            CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=peNBA0WW}Starting Location", null), new TextObject("{=jg3T5AyE}After Escaping from the raiders you found yourself...", null), new CharacterCreationOnInit(LocationOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
+            CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=peNBA0WW}Starting Location", null), new TextObject("{=jg3T5AyE}Beginning your new adventure", null), new CharacterCreationOnInit(LocationOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
             CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(null);
             characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Near your home in the city where your journey began"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(HomeOnConsequnce), new CharacterCreationApplyFinalEffects(HomeOnAction), new TextObject("{=CvfRsafv} Back to where you started", null), null, 0, 0, 0);
             
@@ -209,20 +218,7 @@ namespace zCulturedStart
         
         private static void LocationOnInit(CharacterCreation characterCreation)
         {
-            List<CharacterCreationMenu> CurMenus = (List<CharacterCreationMenu>)AccessTools.Field(typeof(CharacterCreation), "CharacterCreationMenu").GetValue(characterCreation);
-            bool loaded = false;
-            foreach (CharacterCreationMenu x in CurMenus)
-            {
-                if (x.Text.ToString() == "Who are you in Caldaria...")
-                {
-                    loaded = true;
-                    break;
-                }
-            };
-            if (!loaded)
-            {
-                AddStartOption(characterCreation);
-            }
+            
 
 
         }

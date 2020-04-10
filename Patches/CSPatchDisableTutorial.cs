@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using System.Reflection;
@@ -6,10 +8,8 @@ using StoryMode;
 using StoryMode.Behaviors;
 using StoryMode.Behaviors.Quests.FirstPhase;
 using StoryMode.StoryModePhases;
-using StoryMode.CharacterCreationSystem;
-using TaleWorlds.Localization;
 using HarmonyLib;
-using FreePlay;
+
 
 namespace zCulturedStart
 {   [HarmonyPatch(typeof(MainStoryLine), "CompleteTutorialPhase")]
@@ -21,15 +21,7 @@ namespace zCulturedStart
             __instance.TutorialPhase.GetType().GetMethod("CompleteTutorial", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance.TutorialPhase, new object[] { isSkipped });
             CSOnStoryModeEnded();
             __instance.GetType().GetProperty("FirstPhase").SetValue(__instance, new FirstPhase());
-            if (CSCharCreationOption.CSSelectOption == 4)            {
-                //Skip  to create new quests            
-                
-            }
-            else
-            {
-                
-            }
-            //new BannerInvestigationQuestBehavior.BannerInvestigationQuest(StoryMode.StoryMode.Current.MainStoryLine.Brother).StartQuest();
+            
 
 
             return false;
@@ -49,9 +41,15 @@ namespace zCulturedStart
 
                     QuestBase ActRebuildClan = (QuestBase)Activator.CreateInstance(InitRebuildClan, new object[] { Hero.MainHero });
                     ActRebuildClan.StartQuest();
-                    //QuestBase FreePlaytest = (QuestBase)Activator.CreateInstance(typeof(FreePlayCreateKingdomBehaviour.CreateKingdomFreePlayQuest), new object[] { Hero.MainHero });
-                    //FreePlaytest.StartQuest();
-                    
+                    foreach (MobileParty tracked in MobileParty.All)
+                    {
+                        Campaign.Current.VisualTrackerManager.RemoveTrackedObject(tracked);
+                    }
+                    //Type t = AccessTools.TypeByName("Storymode.BannerInvestigationQuestBehavior+BannerInvestigationQuest");
+                    //Type t = (Type)Traverse.CreateWithType("StoryMode.Behaviors.Quests.FirstPhase.RebuildPlayerClanQuestBehavior+RebuildPlayerClanQuest").Type()
+                    //CampaignEvents.
+                    //CampaignEvents.RemoveListeners(t);
+
                 }
             }
             else

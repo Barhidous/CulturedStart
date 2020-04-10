@@ -48,10 +48,18 @@ namespace zCulturedStart
                     CSAddTroop(2, 5);
                     CSAddTroop(3, 3);
                     CSAddTroop(4, 1);
+                    MobileParty.MainParty.RecentEventsMorale += -40;
+                    Hero.MainHero.BattleEquipment.FillFrom((from x in CharacterObject.All
+                                                            where x.Tier == 3 && x.Culture.StringId == Hero.MainHero.Culture.StringId && !x.IsHero && (x.Occupation == Occupation.Soldier || x.Occupation == Occupation.Mercenary)
+                                                            select x).GetRandomElement<CharacterObject>().Equipment);
                     break;
-                case 5:
-                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 21, true);
+                case 5: // looter
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 40, true);
                     CSAddLooter(7);
+                    foreach (Kingdom x in Campaign.Current.Kingdoms)
+                    {
+                        DeclareWarAction.Apply(x, Hero.MainHero.MapFaction);
+                    }
                     break;
                 default:
                     break;
@@ -60,15 +68,16 @@ namespace zCulturedStart
         private static void CSAddTroop(int Tier, int num)
         {
             CharacterObject characterObject = (from x in CharacterObject.All
-                                               where x.Tier == Tier && x.Culture.ToString() == Hero.MainHero.Culture.ToString() && !x.IsHero
+                                               where x.Tier == Tier && x.Culture.StringId == Hero.MainHero.Culture.StringId && !x.IsHero && (x.Occupation == Occupation.Soldier || x.Occupation == Occupation.Mercenary)
                                                select x).GetRandomElement<CharacterObject>();                                             
 
             PartyBase.MainParty.AddElementToMemberRoster(characterObject, num, false);            
         }
-        private static void CSAddLooter(int num)
+        private static void CSAddLooter(int num) //Dual purpose cause lazy, adds loots and set players gear as looter
         {
             CharacterObject characterObject = MBObjectManager.Instance.GetObject<CharacterObject>("looter");
             PartyBase.MainParty.AddElementToMemberRoster(characterObject, num, false);
+            Hero.MainHero.BattleEquipment.FillFrom(characterObject.Equipment);
         }
         
         private static void AddExiledHero()
@@ -79,8 +88,11 @@ namespace zCulturedStart
                                         select x).GetRandomElement<CharacterObject>();            
             
             Equipment equipment = (from y in CharacterObject.All
-                                   where y.Level > 20 && y.Culture.StringId == wanderer.Culture.StringId && !y.IsHero && y.Tier > 4
+                                   where y.Level >20 && y.Culture.StringId == wanderer.Culture.StringId && !y.IsHero && y.Tier > 4
                                    select y).GetRandomElement<CharacterObject>().Equipment;
+            Equipment equipmentMC = (from z in CharacterObject.All
+                                     where z.Tier == 4 && z.Culture.StringId == wanderer.Culture.StringId && !z.IsHero 
+                                     select z).GetRandomElement<CharacterObject>().Equipment;
             Settlement randomElement = (from settlement in Settlement.All
                                         where settlement.Culture == wanderer.Culture && settlement.IsTown
                                         select settlement).GetRandomElement<Settlement>();
@@ -89,7 +101,7 @@ namespace zCulturedStart
             Campaign.Current.GetCampaignBehavior<IHeroCreationCampaignBehavior>().DeriveSkillsFromTraits(hero, wanderer);
             GiveGoldAction.ApplyBetweenCharacters(null, hero, 20000, true);
             hero.BattleEquipment.FillFrom(equipment);
-            
+            mainhero.BattleEquipment.FillFrom(equipmentMC);
             hero.HasMet = true;
             hero.Clan = randomElement.OwnerClan;
             hero.ChangeState(Hero.CharacterStates.Active);

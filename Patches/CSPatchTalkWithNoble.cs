@@ -27,7 +27,10 @@ namespace zCulturedStart
             {
                 __instance.GetType().GetField("_allNoblesDead", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, true);
             }
-            
+            if (CSCharCreationOption.CSGameOption == 2)
+            {
+                CampaignEvents.RemoveListeners(__instance);
+            }
         }
    }
 }

@@ -116,6 +116,20 @@ namespace zCulturedStart
                 ItemObject item2 = @object.CharacterObject.Equipment[EquipmentIndex.ArmorItemEndSlot].Item;
                 list2.Add(new FaceGenMount(MountCreationKey.FromString(MountCreationKey.GetRandomMountKey(item2, 2)), @object.CharacterObject.Equipment[EquipmentIndex.ArmorItemEndSlot].Item, @object.CharacterObject.Equipment[EquipmentIndex.HorseHarness].Item, "act_inventory_idle_start"));
             }
+            List<CharacterCreationMenu> CurMenus = (List<CharacterCreationMenu>)AccessTools.Field(typeof(CharacterCreation), "CharacterCreationMenu").GetValue(characterCreation);
+            bool loaded = false;
+            foreach (CharacterCreationMenu x in CurMenus)
+            {
+                if (x.Text.ToString() == "Beginning your new adventure")
+                {
+                    loaded = true;
+                    break;
+                }
+            };
+            if (!loaded)
+            {
+                CultureStartOptions.AddStartLocation(characterCreation);
+            }
         }
         // ***Edited from base game***
         private static void ChangeStoryStageEquipments(CharacterCreation characterCreation)
