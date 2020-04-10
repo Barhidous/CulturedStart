@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Core;
+using TaleWorlds.SaveSystem;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using StoryMode.CharacterCreationSystem;
@@ -29,12 +30,12 @@ namespace zCulturedStart
                 _CSSelcOption = value;
             }
         }
+        
         private static int _CSGameOption;
 
-        
 
-        
         // 0 = FP default 1 = Fp nezzy 2 = fp sandbox 3 = default 4= nezzy 5 = sandbox no kingdom
+        //[SaveableProperty(1)]
         public static int CSGameOption
         {
             get

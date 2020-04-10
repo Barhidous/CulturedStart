@@ -26,18 +26,31 @@ namespace zCulturedStart
         {
         }
         public void OnCharacterCreationIsOver()
-        {            
+        {
+            
         }
         private void OnQuestCompleted(QuestBase quest, QuestBase.QuestCompleteDetails detail)
         {
             if (quest.StringId == "rebuild_player_clan_storymode_quest")
             {
-                if (CultureStartOptions.FreePlayLoadedOnCondition())
+                if (CultureStartOptions.FreePlayLoadedOnCondition() && Campaign.Current.QuestManager.Quests.Count < 2)
                 {
                     Type dynamicFP = AccessTools.TypeByName("FreePlay.FreePlayCreateKingdomBehaviour").GetNestedType("CreateKingdomFreePlayQuest");
                    
                     QuestBase FreePlayKingdom = (QuestBase)Activator.CreateInstance(dynamicFP, new object[] { Hero.MainHero });
                     FreePlayKingdom.StartQuest();
+                }
+                else
+                {
+                    
+                    foreach (QuestBase quest1 in Campaign.Current.QuestManager.Quests)
+                    {
+                        if (quest1.StringId == "free_play_create_kingdom_quest")
+                        { 
+                        quest1.CompleteQuestWithCancel();
+                            break;
+                        }
+                    }
                 }
                
             }

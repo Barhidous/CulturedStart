@@ -32,9 +32,9 @@ namespace zCulturedStart
             harmony.Patch(BannerInvestigationQuest, new HarmonyMethod(postfix));
             harmony.PatchAll();
             if (CultureStartOptions.FreePlayLoadedOnCondition()) { 
-            List<InitialStateOption> list = (List <InitialStateOption>)AccessTools.Field(TaleWorlds.MountAndBlade.Module.CurrentModule.GetType(), "_initialStateOptions").GetValue(TaleWorlds.MountAndBlade.Module.CurrentModule);
-            InitialStateOption fp = list.Find(x => x.Id == "FreePlayStartGame");
-            list.Remove(fp);
+                List<InitialStateOption> list = (List <InitialStateOption>)AccessTools.Field(TaleWorlds.MountAndBlade.Module.CurrentModule.GetType(), "_initialStateOptions").GetValue(TaleWorlds.MountAndBlade.Module.CurrentModule);
+                InitialStateOption fp = list.Find(x => x.Id == "FreePlayStartGame");
+                list.Remove(fp);
             }
 
         }
