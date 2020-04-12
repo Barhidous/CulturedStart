@@ -21,8 +21,10 @@ namespace zCulturedStart
             __instance.TutorialPhase.GetType().GetMethod("CompleteTutorial", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance.TutorialPhase, new object[] { isSkipped });
             CSOnStoryModeEnded();
             __instance.GetType().GetProperty("FirstPhase").SetValue(__instance, new FirstPhase());
-            
-
+            //Combining multiple cleanup/complete logics that do not get called if you dont leave tutorial manually.
+            CampaignEvents.RemoveListeners(Campaign.Current.GetCampaignBehavior<TutorialPhaseCampaignBehavior>());
+            StoryModeEvents.RemoveListeners(Campaign.Current.GetCampaignBehavior<TutorialPhaseCampaignBehavior>());
+            StoryMode.StoryMode.Current.MainStoryLine.Brother.ChangeState(Hero.CharacterStates.Disabled);
 
             return false;
         }
@@ -45,6 +47,7 @@ namespace zCulturedStart
                     {
                         Campaign.Current.VisualTrackerManager.RemoveTrackedObject(tracked);
                     }
+
                     //Type t = AccessTools.TypeByName("Storymode.BannerInvestigationQuestBehavior+BannerInvestigationQuest");
                     //Type t = (Type)Traverse.CreateWithType("StoryMode.Behaviors.Quests.FirstPhase.RebuildPlayerClanQuestBehavior+RebuildPlayerClanQuest").Type()
                     //CampaignEvents.

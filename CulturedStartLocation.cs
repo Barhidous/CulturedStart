@@ -10,7 +10,9 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Library;
 using HarmonyLib;
+using StoryMode;
 using StoryMode.Behaviors;
+using StoryMode.StoryModePhases;
 
 
 namespace zCulturedStart
@@ -49,11 +51,19 @@ namespace zCulturedStart
 
 
         }
-        private static bool Prefix(CampaignBehaviorBase __instance)
+        private static bool Prefix(TrainingFieldCampaignBehavior __instance)
         {
             // Overwriting entire base options this is default patch. Todo make generic based on conditional patch
             Hero brother = StoryMode.StoryMode.Current.MainStoryLine.Brother;
             PartyBase.MainParty.MemberRoster.RemoveTroop(brother.CharacterObject, 1, default(UniqueTroopDescriptor), 0);
+            //Setting Various extra values to try and match usual complete tutorial phase to make sure events fire.
+            AccessTools.Field(typeof(TrainingFieldCampaignBehavior), "_talkedWithBrotherForTheFirstTime").SetValue(__instance, true);
+            TutorialPhase.Instance.PlayerTalkedWithBrotherForTheFirstTime();
+            brother.ChangeState(Hero.CharacterStates.Disabled);
+            //Believe this is line missed that is causing all the brother issues
+            StoryMode.StoryMode.Current.MainStoryLine.Brother.Clan = CampaignData.NeutralFaction;
+
+
             StoryMode.StoryMode.Current.MainStoryLine.CompleteTutorialPhase(true);
             Vec2 StartPos = GetSettlementLoc(CSOptionSettlement());
             MobileParty.MainParty.Position2D = StartPos;

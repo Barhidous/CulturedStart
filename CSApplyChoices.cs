@@ -58,8 +58,10 @@ namespace zCulturedStart
                     CSAddLooter(7);
                     foreach (Kingdom x in Campaign.Current.Kingdoms)
                     {
-                        DeclareWarAction.Apply(x, Hero.MainHero.MapFaction);
+                        ChangeCrimeRatingAction.Apply(x.MapFaction, 35, false);
+                       // DeclareWarAction.Apply(x, Hero.MainHero.MapFaction);
                     }
+                    
                     break;
                 default:
                     break;
@@ -78,6 +80,7 @@ namespace zCulturedStart
             CharacterObject characterObject = MBObjectManager.Instance.GetObject<CharacterObject>("looter");
             PartyBase.MainParty.AddElementToMemberRoster(characterObject, num, false);
             Hero.MainHero.BattleEquipment.FillFrom(characterObject.Equipment);
+            Hero.MainHero.CivilianEquipment.FillFrom(characterObject.Equipment);
         }
         
         private static void AddExiledHero()
@@ -99,7 +102,7 @@ namespace zCulturedStart
             //wanderer.Equipment.FillFrom(equipment);
             Hero hero = HeroCreator.CreateSpecialHero(wanderer, randomElement, null, null, 33);
             Campaign.Current.GetCampaignBehavior<IHeroCreationCampaignBehavior>().DeriveSkillsFromTraits(hero, wanderer);
-            GiveGoldAction.ApplyBetweenCharacters(null, hero, 20000, true);
+            GiveGoldAction.ApplyBetweenCharacters(null, hero, 2000, true);
             hero.BattleEquipment.FillFrom(equipment);
             mainhero.BattleEquipment.FillFrom(equipmentMC);
             hero.HasMet = true;

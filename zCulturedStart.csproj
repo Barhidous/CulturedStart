@@ -221,6 +221,7 @@
     <Compile Include="Patches\CSEscapePatch.cs" />
     <Compile Include="CSQuestBehaviour.cs" />
     <Compile Include="Patches\CSPatchOnLordPartySpawned.cs" />
+    <Compile Include="Patches\CSPatchOnSettleLeft.cs" />
     <Compile Include="Patches\CSPatchSetTextVariables.cs" />
     <Compile Include="Patches\CSPatchTalkWithNoble.cs" />
     <Compile Include="CulturedStartInit.cs" />
