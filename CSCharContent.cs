@@ -39,6 +39,39 @@ namespace zCulturedStart
             //Looter start
             characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH}A looter lowlife.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSLooterOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}Left impoverished from war, you found a group of like minded ruffians who desperate to get by", null), null, 0, 0, 0);
 
+            //Vassal Start
+            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} A new vassal of " + CharacterCreationContent.Instance.Culture, null), new List<SkillObject> { DefaultSkills.Steward }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSVassalOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}A young noble who came into an arrangement with the king for a chance at land", null), null, 0, 150, 0);
+
+
+            //Kingdom Start
+            TextObject shortdesc = new TextObject("", null);
+            TextObject fulldesc = new TextObject("With the support of companions you have gathered an army. With limited funds and food you decided it's time for action.", null);
+
+            switch (CharacterCreationContent.Instance.Culture.StringId)
+            {
+                case "sturgia":
+                    shortdesc = new TextObject("Leading a Viking Expedition",null);                    
+                    break;
+                case "aserai":
+                    shortdesc = new TextObject("Leading a Jihad", null);
+                    break;
+                case "vlandia":
+                    shortdesc = new TextObject("Leading a Crusade", null);
+                    break;
+                case "battania":
+                    shortdesc = new TextObject("Leading a Raiding Expedition", null);
+                    break;
+                case "khuzait":
+                    shortdesc = new TextObject("Becoming a Great Khan", null);
+                    break;
+                case "empire":
+                    shortdesc = new TextObject("Becoming a new Empire State", null);
+                    break;
+                default:
+                    break;
+            }                    
+
+            characterCreationCategory.AddCategoryOption(shortdesc, new List<SkillObject> { DefaultSkills.Leadership, DefaultSkills.Steward}, CharacterAttributesEnum.Social, 1, 15, 1, null, new CharacterCreationOnSelect(CSKingdomOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), fulldesc, null, 0, 351, 0);
             characterCreation.AddNewMenu(characterCreationMenu);
         }
         
@@ -62,8 +95,16 @@ namespace zCulturedStart
         {
             CSCharCreationOption.CSSelectOption = 5;
         }
-        
-        
+        private static void CSVassalOnConsequence(CharacterCreation characterCreation)
+        {
+            CSCharCreationOption.CSSelectOption = 6;
+        }
+        private static void CSKingdomOnConsequence(CharacterCreation characterCreation)
+        {
+            CSCharCreationOption.CSSelectOption = 7;
+        }
+
+       
 
         //Not using right now investigate if anything has to happen
         private static void BranchsOnInit(CharacterCreation characterCreation)
