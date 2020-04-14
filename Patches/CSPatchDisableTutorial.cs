@@ -43,6 +43,7 @@ namespace zCulturedStart
 
                     QuestBase ActRebuildClan = (QuestBase)Activator.CreateInstance(InitRebuildClan, new object[] { Hero.MainHero });
                     ActRebuildClan.StartQuest();
+                    
                     foreach (MobileParty tracked in MobileParty.All)
                     {
                         Campaign.Current.VisualTrackerManager.RemoveTrackedObject(tracked);

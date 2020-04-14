@@ -213,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSApplyChoices.cs" />
+    <Compile Include="Patches\CSPatchColorCreator.cs" />
     <Compile Include="Patches\CSBehaviourPatch.cs" />
     <Compile Include="Patches\CSPatchAddMenus.cs" />
     <Compile Include="CSCharCreationOption.cs" />

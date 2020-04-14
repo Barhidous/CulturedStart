@@ -61,7 +61,7 @@ namespace zCulturedStart
                     CSAddLooter(7);
                     foreach (Kingdom x in Campaign.Current.Kingdoms)
                     {
-                        ChangeCrimeRatingAction.Apply(x.MapFaction, 35, false);
+                        ChangeCrimeRatingAction.Apply(x.MapFaction, 50, false);
                        // DeclareWarAction.Apply(x, Hero.MainHero.MapFaction);
                     }                    
                     break;

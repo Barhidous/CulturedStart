@@ -22,6 +22,7 @@ namespace zCulturedStart
         {
             StoryModeEvents.OnCharacterCreationIsOverEvent.AddNonSerializedListener(this, new Action(this.OnCharacterCreationIsOver));
             CampaignEvents.OnQuestCompletedEvent.AddNonSerializedListener(this, new Action<QuestBase, QuestBase.QuestCompleteDetails>(this.OnQuestCompleted));
+            CampaignEvents.OnQuestStartedEvent.AddNonSerializedListener(this, new Action<QuestBase>(this.OnQuestStarted));
         }
         public override void SyncData(IDataStore dataStore)
         {
@@ -32,6 +33,13 @@ namespace zCulturedStart
             if(CultureStartOptions.FreePlayLoadedOnCondition() && CSCharCreationOption.CSGameOption != 2){ 
             CampaignBehaviorBase FPBeh = (CampaignBehaviorBase)AccessTools.Method(typeof(StoryMode.CampaignStoryMode), nameof(CampaignStoryMode.GetCampaignBehavior)).MakeGenericMethod(this.FpType).Invoke(Campaign.Current, null);            
             CampaignEvents.RemoveListeners(FPBeh);
+            }
+        }
+        private void OnQuestStarted(QuestBase quest)
+        {
+            if (quest.StringId == "investigate_neretzes_banner_quest" && CSCharCreationOption.CSGameOption == 1)
+            { 
+                AccessTools.Method(typeof(QuestBase), "CompleteQuestWithSuccess").Invoke(quest, null);
             }
         }
         private void OnQuestCompleted(QuestBase quest, QuestBase.QuestCompleteDetails detail)
