@@ -34,10 +34,6 @@
     <Reference Include="0Harmony">
       <HintPath>D:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\MNBAltStart\bin\Win64_Shipping_Client\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="FreePlay">
-      <HintPath>D:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\FreePlay\bin\Win64_Shipping_Client\FreePlay.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="StoryMode">
       <HintPath>D:\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\StoryMode\bin\Win64_Shipping_Client\StoryMode.dll</HintPath>
       <Private>False</Private>
@@ -213,6 +209,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSApplyChoices.cs" />
+    <Compile Include="CSScreenData.cs" />
+    <Compile Include="CSSkillScreen.cs" />
+    <Compile Include="CSSkillScreenViewModel.cs" />
+    <Compile Include="Patches\CSFreePlayPatch.cs" />
     <Compile Include="Patches\CSPatchColorCreator.cs" />
     <Compile Include="Patches\CSBehaviourPatch.cs" />
     <Compile Include="Patches\CSPatchAddMenus.cs" />

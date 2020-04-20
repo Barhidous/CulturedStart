@@ -105,7 +105,7 @@ namespace zCulturedStart
         {//This is from cheat, works but not thourughly tested
             Kingdom kingdom = MBObjectManager.Instance.CreateObject<Kingdom>("player_kingdom");
             TextObject textObject = new TextObject("{=yGaGlXgQ}Player Kingdom", null);
-            kingdom.InitializeKingdom(textObject, textObject, Clan.PlayerClan.Culture, Clan.PlayerClan.Banner, Clan.PlayerClan.Color, Clan.PlayerClan.Color2);
+            kingdom.InitializeKingdom(textObject, textObject, Clan.PlayerClan.Culture, Clan.PlayerClan.Banner, Clan.PlayerClan.Color, Clan.PlayerClan.Color2, MobileParty.MainParty.Position2D);
             ChangeKingdomAction.ApplyByJoinToKingdom(Clan.PlayerClan, kingdom, true);
             kingdom.RulingClan = Clan.PlayerClan;
             //Fix for basegame bug of influence not being gained until loaded again

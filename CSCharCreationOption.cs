@@ -115,7 +115,33 @@ namespace zCulturedStart
             return Settlement.FindAll((Settlement x) => x.IsTown).GetRandomElement<Settlement>();
             
         }
-        
 
+        public static Settlement CSOptionSettlement()
+        {
+            int opt = CSCharCreationOption.CSLocationOption;
+            switch (opt)
+            {
+                case 0:
+                    return CSCharCreationOption.cultureSettlement(Hero.MainHero);
+                case 1:
+                    return CSCharCreationOption.RandcultureSettlement();
+                case 2:
+                    return Settlement.Find("town_A8");
+                case 3:
+                    return Settlement.Find("town_B2");
+                case 4:
+                    return Settlement.Find("town_EW2");
+                case 5:
+                    return Settlement.Find("town_S2");
+                case 6:
+                    return Settlement.Find("town_K4");
+                case 7:
+                    return Settlement.Find("town_V3");
+                default:
+                    return Settlement.Find("tutorial_training_field");
+            }
+
+
+        }
     }
 }

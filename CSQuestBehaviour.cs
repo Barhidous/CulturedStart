@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using StoryMode;
 using StoryMode.Behaviors.Quests.FirstPhase;
@@ -8,7 +9,6 @@ using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Core;
-using FreePlay;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using HarmonyLib;
@@ -27,14 +27,38 @@ namespace zCulturedStart
         public override void SyncData(IDataStore dataStore)
         {
         }
-        private readonly Type FpType = AccessTools.TypeByName("FreePlay.FreePlayCreateKingdomBehaviour");
+        private readonly Type FpType = AccessTools.TypeByName("FreePlay.FreePlayCreateKingdomBehavior");
+        private readonly Type FpStartType = AccessTools.TypeByName("FreePlay.FreePlayGameStartBehavior");
+        
         public void OnCharacterCreationIsOver()
         {
-            if(CultureStartOptions.FreePlayLoadedOnCondition() && CSCharCreationOption.CSGameOption != 2){ 
-            CampaignBehaviorBase FPBeh = (CampaignBehaviorBase)AccessTools.Method(typeof(StoryMode.CampaignStoryMode), nameof(CampaignStoryMode.GetCampaignBehavior)).MakeGenericMethod(this.FpType).Invoke(Campaign.Current, null);            
-            CampaignEvents.RemoveListeners(FPBeh);
-            }
+                      
+
         }
+        public static Vec2 GetSettlementLoc(Settlement settlement) //This is to get the vector of a HC settlement...Possible Todo Home town
+        {
+            return settlement.GatePosition;
+        }
+        private static void SelectClanName()
+        {
+            InformationManager.ShowTextInquiry(new TextInquiryData(new TextObject("{=JJiKk4ow}Select your family name: ", null).ToString(), string.Empty, true, false, GameTexts.FindText("str_done", null).ToString(), null, new Action<string>(OnChangeClanNameDone), null, false, new Func<string, bool>(IsNewClanNameApplicable), ""), false);
+        }
+        private static bool IsNewClanNameApplicable(string input)
+        {
+            return input.Length <= 50 && input.Length >= 1;
+        }
+        private static void OnChangeClanNameDone(string newClanName)
+        {
+            TextObject textObject = new TextObject(newClanName ?? "", null);
+            Clan.PlayerClan.InitializeClan(textObject, textObject, Clan.PlayerClan.Culture, Clan.PlayerClan.Banner);
+            OpenBannerSelectionScreen();
+        }
+
+        private static void OpenBannerSelectionScreen()
+        {
+            Game.Current.GameStateManager.PushState(Game.Current.GameStateManager.CreateState<BannerEditorState>(), 0);
+        }
+
         private void OnQuestStarted(QuestBase quest)
         {
             if (quest.StringId == "investigate_neretzes_banner_quest" && CSCharCreationOption.CSGameOption == 1)
@@ -44,32 +68,10 @@ namespace zCulturedStart
         }
         private void OnQuestCompleted(QuestBase quest, QuestBase.QuestCompleteDetails detail)
         {
-            if (quest.StringId == "rebuild_player_clan_storymode_quest")
-            {
-                if (CultureStartOptions.FreePlayLoadedOnCondition() && Campaign.Current.QuestManager.Quests.Count < 2)
-                {
-                    Type dynamicFP = AccessTools.TypeByName("FreePlay.FreePlayCreateKingdomBehaviour").GetNestedType("CreateKingdomFreePlayQuest");
-                   
-                    QuestBase FreePlayKingdom = (QuestBase)Activator.CreateInstance(dynamicFP, new object[] { Hero.MainHero });
-                    FreePlayKingdom.StartQuest();
+           
+              
+        }       
 
-                }
-                else
-                {
-                    
-                    foreach (QuestBase quest1 in Campaign.Current.QuestManager.Quests)
-                    {
-                        if (quest1.StringId == "free_play_create_kingdom_quest")
-                        { 
-                        quest1.CompleteQuestWithCancel();
-                            break;
-                        }
-                    }
-                }
-               
-            }
-        }
-        
     }
         
 }

@@ -12,6 +12,7 @@ using StoryMode;
 using StoryMode.CharacterCreationSystem;
 using HarmonyLib;
 using TaleWorlds.Localization;
+using TaleWorlds.Engine.Screens;
 
 
 namespace zCulturedStart
@@ -143,8 +144,8 @@ namespace zCulturedStart
             CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=peNBA0WW}Quest Start Options", null), new TextObject("{=jg3T5AyE}How do you want to handle your Quests", null), new CharacterCreationOnInit(GameOptionOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
             //Free Play add this
             CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(new CharacterCreationOnCondition(FreePlayLoadedOnCondition));
-            characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Tutorial Skip (Default Quests)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(FPDefaultOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Default start of the game just without Tutorial", null), null, 0, 0, 0);
-            characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Neretzes's Folly (Skips First Quest)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(FPSkipOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} First Non Quest Noble you talk to completes the quest.", null), null, 0, 0, 0);
+            //characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Tutorial Skip (Default Quests)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(FPDefaultOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Default start of the game just without Tutorial", null), null, 0, 0, 0);
+            //characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Neretzes's Folly (Skips First Quest)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(FPSkipOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} First Non Quest Noble you talk to completes the quest.", null), null, 0, 0, 0);
             characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Sandbox Start *Just Let Me Play*"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(FPSandBoxOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} No Story quests but still able to create New Kingdom", null), null, 0, 0, 0);
             //No Free Play Load this
             CharacterCreationCategory characterCreationCategory2 = characterCreationMenu.AddMenuCategory(new CharacterCreationOnCondition(NotFreePlayLoadedOnCondition));
@@ -173,6 +174,7 @@ namespace zCulturedStart
         }
         private static void FPDefaultOnConsequence(CharacterCreation characterCreation)
         {
+            
             CSCharCreationOption.CSGameOption = 0;
         }
         private static void FPSkipOnConsequence(CharacterCreation characterCreation)
@@ -184,7 +186,8 @@ namespace zCulturedStart
             CSCharCreationOption.CSGameOption = 2;
         }
         private static void DefaultOnConsequence(CharacterCreation characterCreation)
-        {
+        {                      
+            
             CSCharCreationOption.CSGameOption = 0;
         }
         private static void SkipOnConsequence(CharacterCreation characterCreation)

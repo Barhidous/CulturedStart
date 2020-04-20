@@ -8,6 +8,7 @@ using TaleWorlds.MountAndBlade;
 using TaleWorlds.Localization;
 using StoryMode.Behaviors.Quests.FirstPhase;
 using System.Reflection;
+using zCulturedStart.Patches;
 
 
 namespace zCulturedStart
@@ -23,19 +24,22 @@ namespace zCulturedStart
             // Type test3 = typeof(BannerInvestigationQuestBehavior).GetType("BannerInvestigationQuest");
             //typeof(BannerInvestigationQuestBehavior).Declar
             //for typeof(BannerInvestigationQuestBehavior).GetType("")
-            var BannerInvestigationQuest = typeof(BannerInvestigationQuestBehavior).Assembly.GetType("StoryMode.Behaviors.Quests.FirstPhase.BannerInvestigationQuestBehavior+BannerInvestigationQuest").GetMethod("InitializeNotablesToTalkList", BindingFlags.NonPublic | BindingFlags.Instance);
-            
+            var BannerInvestigationQuest = typeof(BannerInvestigationQuestBehavior).Assembly.GetType("StoryMode.Behaviors.Quests.FirstPhase.BannerInvestigationQuestBehavior+BannerInvestigationQuest").GetMethod("InitializeNotablesToTalkList", BindingFlags.NonPublic | BindingFlags.Instance);            
             var postfix = typeof(CSTalkWithNoblePatch).GetMethod("NoblePatch", BindingFlags.NonPublic | BindingFlags.Static);
+            Harmony harmony = new Harmony("mod.bannerlord.CS");
+            if (CultureStartOptions.FreePlayLoadedOnCondition()) {
+                var test = AccessTools.TypeByName("FreePlay.FreePlayGameStartBehavior");
+                var FPStart = AccessTools.Method(AccessTools.TypeByName("FreePlay.FreePlayGameStartBehavior"), "OnCharacterCreationIsOver");
+                var FPPostfix = typeof(CSFreePlayPatch).GetMethod("Postfix", BindingFlags.NonPublic | BindingFlags.Static);
+                harmony.Patch(FPStart, null, new HarmonyMethod(FPPostfix));
+            }
+            
+            harmony.Patch(BannerInvestigationQuest, new HarmonyMethod(postfix));
+
             
 
-            Harmony harmony = new Harmony("mod.bannerlord.CS");
-            harmony.Patch(BannerInvestigationQuest, new HarmonyMethod(postfix));
             harmony.PatchAll();
-            if (CultureStartOptions.FreePlayLoadedOnCondition()) { 
-                List<InitialStateOption> list = (List <InitialStateOption>)AccessTools.Field(TaleWorlds.MountAndBlade.Module.CurrentModule.GetType(), "_initialStateOptions").GetValue(TaleWorlds.MountAndBlade.Module.CurrentModule);
-                InitialStateOption fp = list.Find(x => x.Id == "FreePlayStartGame");
-                list.Remove(fp);
-            }
+           
 
         }
         

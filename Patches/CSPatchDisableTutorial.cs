@@ -24,8 +24,9 @@ namespace zCulturedStart
             //Combining multiple cleanup/complete logics that do not get called if you dont leave tutorial manually.
             CampaignEvents.RemoveListeners(Campaign.Current.GetCampaignBehavior<TutorialPhaseCampaignBehavior>());
             StoryModeEvents.RemoveListeners(Campaign.Current.GetCampaignBehavior<TutorialPhaseCampaignBehavior>());
+            if(StoryMode.StoryMode.Current.MainStoryLine.Brother != null ){ 
             StoryMode.StoryMode.Current.MainStoryLine.Brother.ChangeState(Hero.CharacterStates.Disabled);
-
+            }
             return false;
         }
         private readonly Type _rebuildPlayerClanQuest = typeof(RebuildPlayerClanQuestBehavior).GetNestedType("RebuildPlayerClanQuest", BindingFlags.NonPublic);
@@ -48,12 +49,7 @@ namespace zCulturedStart
                     {
                         Campaign.Current.VisualTrackerManager.RemoveTrackedObject(tracked);
                     }
-
-                    //Type t = AccessTools.TypeByName("Storymode.BannerInvestigationQuestBehavior+BannerInvestigationQuest");
-                    //Type t = (Type)Traverse.CreateWithType("StoryMode.Behaviors.Quests.FirstPhase.RebuildPlayerClanQuestBehavior+RebuildPlayerClanQuest").Type()
-                    //CampaignEvents.
-                    //CampaignEvents.RemoveListeners(t);
-
+                   
                 }
             }
             else
