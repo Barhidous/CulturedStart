@@ -15,6 +15,7 @@ using StoryMode;
 using StoryMode.Behaviors.Quests.FirstPhase;
 using StoryMode.CharacterCreationSystem;
 using TaleWorlds.Localization;
+using TaleWorlds.ObjectSystem;
 
 namespace zCulturedStart
 {

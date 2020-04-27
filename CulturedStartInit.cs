@@ -19,24 +19,17 @@ namespace zCulturedStart
         {
             base.OnSubModuleLoad();
 
-            //Type test = typeof(BannerInvestigationQuestBehavior).Assembly.GetType("BannerInvestigationQuest");
-            //Type test2 = typeof(BannerInvestigationQuestBehavior).Assembly.GetType("StoryMode.Behaviors.Quests.FirstPhase.BannerInvestigationQuestBehavior+BannerInvestigationQuest");
-            // Type test3 = typeof(BannerInvestigationQuestBehavior).GetType("BannerInvestigationQuest");
-            //typeof(BannerInvestigationQuestBehavior).Declar
-            //for typeof(BannerInvestigationQuestBehavior).GetType("")
+           
             var BannerInvestigationQuest = typeof(BannerInvestigationQuestBehavior).Assembly.GetType("StoryMode.Behaviors.Quests.FirstPhase.BannerInvestigationQuestBehavior+BannerInvestigationQuest").GetMethod("InitializeNotablesToTalkList", BindingFlags.NonPublic | BindingFlags.Instance);            
             var postfix = typeof(CSTalkWithNoblePatch).GetMethod("NoblePatch", BindingFlags.NonPublic | BindingFlags.Static);
             Harmony harmony = new Harmony("mod.bannerlord.CS");
-            if (CultureStartOptions.FreePlayLoadedOnCondition()) {
-                var test = AccessTools.TypeByName("FreePlay.FreePlayGameStartBehavior");
+            if (CultureStartOptions.FreePlayLoadedOnCondition()) {                
                 var FPStart = AccessTools.Method(AccessTools.TypeByName("FreePlay.FreePlayGameStartBehavior"), "OnCharacterCreationIsOver");
                 var FPPostfix = typeof(CSFreePlayPatch).GetMethod("Postfix", BindingFlags.NonPublic | BindingFlags.Static);
                 harmony.Patch(FPStart, null, new HarmonyMethod(FPPostfix));
             }
             
-            harmony.Patch(BannerInvestigationQuest, new HarmonyMethod(postfix));
-
-            
+            harmony.Patch(BannerInvestigationQuest, new HarmonyMethod(postfix));                    
 
             harmony.PatchAll();
            

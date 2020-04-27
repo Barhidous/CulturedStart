@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Core;
+using TaleWorlds.ObjectSystem;
 using TaleWorlds.Library;
 using System.Reflection;
 using StoryMode;
@@ -23,25 +24,25 @@ namespace zCulturedStart
         {
             //Default option CSDefault
             
-            CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=peNBA0WW}Story Background", null), new TextObject("{=jg3T5AyE}Who are you in Caldaria...", null), new CharacterCreationOnInit(BranchsOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
+            CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=1eNBA0WW}Story Background", null), new TextObject("{=5g3T5AyE}Who are you in Caldaria...", null), new CharacterCreationOnInit(BranchsOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
 
             CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(null);
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH}A commoner (Default Start)", null), new List<SkillObject> { DefaultSkills.Charm }, 0,0,0,0, null,new CharacterCreationOnSelect(CSDefaultOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Setting off with your Father, Mother, Brother and your two younger siblings to a new town you'd heard was safer. But you did not make it", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=12CHolsH}A commoner (Default Start)", null), new List<SkillObject> { DefaultSkills.Charm }, 0,0,0,0, null,new CharacterCreationOnSelect(CSDefaultOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Setting off with your Father, Mother, Brother and your two younger siblings to a new town you'd heard was safer. But you did not make it", null), null, 0, 0, 0);
 
             //Merchant Start
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH}A budding caravanner", null), new List<SkillObject> { DefaultSkills.Trade }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(MerchantOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}With what savings you could muster you purchased some mules and mercenaries", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=13CHolsH}A budding caravanner", null), new List<SkillObject> { DefaultSkills.Trade }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(MerchantOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}With what savings you could muster you purchased some mules and mercenaries", null), null, 0, 0, 0);
 
             //Exiled Start
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} A noble of " + CharacterCreationContent.Instance.Culture.StringId + " in exile", null), new List<SkillObject> { DefaultSkills.Leadership }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSExileOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}Forced into exile after your parents were executed for suspected treason. With only your family's bodyguard you set off. Should you return you'd be viewed as a criminal.", null), null, 0, 150, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=14CHolsH} A noble of " + CharacterCreationContent.Instance.Culture.StringId + " in exile", null), new List<SkillObject> { DefaultSkills.Leadership }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSExileOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}Forced into exile after your parents were executed for suspected treason. With only your family's bodyguard you set off. Should you return you'd be viewed as a criminal.", null), null, 0, 150, 0);
 
             //Mercanary start            
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH}In a failing mercenary company", null), new List<SkillObject> { DefaultSkills.Tactics }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(MercenaryOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}With men deserting over lack of wages, your company leader was found, and you decided to take you chance and lead", null), null, 0, 50, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=15CHolsH}In a failing mercenary company", null), new List<SkillObject> { DefaultSkills.Tactics }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(MercenaryOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}With men deserting over lack of wages, your company leader was found, and you decided to take you chance and lead", null), null, 0, 50, 0);
             
             //Looter start
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH}A looter lowlife.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSLooterOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}Left impoverished from war, you found a group of like minded ruffians who desperate to get by", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=16CHolsH}A looter lowlife.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSLooterOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}Left impoverished from war, you found a group of like minded ruffians who desperate to get by", null), null, 0, 0, 0);
 
             //Vassal Start
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} A new vassal of " + CharacterCreationContent.Instance.Culture, null), new List<SkillObject> { DefaultSkills.Steward }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSVassalOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}A young noble who came into an arrangement with the king for a chance at land", null), null, 0, 150, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=17CHolsH} A new vassal of " + CharacterCreationContent.Instance.Culture, null), new List<SkillObject> { DefaultSkills.Steward }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSVassalOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}A young noble who came into an arrangement with the king for a chance at land", null), null, 0, 150, 0);
 
 
             //Kingdom Start
@@ -51,22 +52,22 @@ namespace zCulturedStart
             switch (CharacterCreationContent.Instance.Culture.StringId)
             {
                 case "sturgia":
-                    shortdesc = new TextObject("Leading a Viking Expedition",null);                    
+                    shortdesc = new TextObject("{=f6CSm3sP}Leading a Viking Expedition", null);                    
                     break;
                 case "aserai":
-                    shortdesc = new TextObject("Leading a Jihad", null);
+                    shortdesc = new TextObject("{=f5CSm3sP}Leading a Jihad", null);
                     break;
                 case "vlandia":
-                    shortdesc = new TextObject("Leading a Crusade", null);
+                    shortdesc = new TextObject("{=f4CSm3sP}Leading a Crusade", null);
                     break;
                 case "battania":
-                    shortdesc = new TextObject("Leading a Raiding Expedition", null);
+                    shortdesc = new TextObject("{=f3CSm3sP}Leading a Raiding Expedition", null);
                     break;
                 case "khuzait":
-                    shortdesc = new TextObject("Becoming a Great Khan", null);
+                    shortdesc = new TextObject("{=f1CSm3sP}Becoming a Great Khan", null);
                     break;
                 case "empire":
-                    shortdesc = new TextObject("Becoming a new Empire State", null);
+                    shortdesc = new TextObject("{=f2CSm3sP}Becoming a new Empire State", null);
                     break;
                 default:
                     break;
@@ -141,17 +142,17 @@ namespace zCulturedStart
         public static void AddGameOption(CharacterCreation characterCreation)
         {
             //Adding this menu to choose start option type to leave story options story only
-            CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=peNBA0WW}Quest Start Options", null), new TextObject("{=jg3T5AyE}How do you want to handle your Quests", null), new CharacterCreationOnInit(GameOptionOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
+            CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=peNBA0WW}Quest Start Options", null), new TextObject("{=1g3T5AyE}How do you want to handle your Quests", null), new CharacterCreationOnInit(GameOptionOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
             //Free Play add this
             CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(new CharacterCreationOnCondition(FreePlayLoadedOnCondition));
             //characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Tutorial Skip (Default Quests)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(FPDefaultOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Default start of the game just without Tutorial", null), null, 0, 0, 0);
             //characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Neretzes's Folly (Skips First Quest)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(FPSkipOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} First Non Quest Noble you talk to completes the quest.", null), null, 0, 0, 0);
-            characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Sandbox Start *Just Let Me Play*"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(FPSandBoxOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} No Story quests but still able to create New Kingdom", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject(("{=1vCHolsH} Sandbox Start *Just Let Me Play*"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(FPSandBoxOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} No Story quests but still able to create New Kingdom", null), null, 0, 0, 0);
             //No Free Play Load this
             CharacterCreationCategory characterCreationCategory2 = characterCreationMenu.AddMenuCategory(new CharacterCreationOnCondition(NotFreePlayLoadedOnCondition));
-            characterCreationCategory2.AddCategoryOption(new TextObject(("{=5vCHolsH} Tutorial Skip (Default Quests)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(DefaultOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Default start of the game just without Tutorial", null), null, 0, 0, 0);
-            characterCreationCategory2.AddCategoryOption(new TextObject(("{=5vCHolsH} Neretzes's Folly Skip (Skips First Quest)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(SkipOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} First Non Quest Noble you talk to completes the quest.", null), null, 0, 0, 0);
-            characterCreationCategory2.AddCategoryOption(new TextObject(("{=5vCHolsH} Sandbox ***NO CUSTOM KINGDOM***"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(SandBoxOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Download Just Let me Play BEFORE starting your game to Enable Kingdoms. No quests", null), null, 0, 0, 0);
+            characterCreationCategory2.AddCategoryOption(new TextObject(("{=5vCHolsH} Tutorial Skip (Default Quests)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(DefaultOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=2vCHolsH} Default start of the game just without Tutorial", null), null, 0, 0, 0);
+            characterCreationCategory2.AddCategoryOption(new TextObject(("{=2vCHolsH} Neretzes's Folly Skip (Skips First Quest)"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(SkipOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} First Non Quest Noble you talk to completes the quest.", null), null, 0, 0, 0);
+            characterCreationCategory2.AddCategoryOption(new TextObject(("{=3vCHolsH} Sandbox ***NO CUSTOM KINGDOM***"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(SandBoxOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Download Just Let me Play BEFORE starting your game to Enable Kingdoms. No quests", null), null, 0, 0, 0);
             characterCreation.AddNewMenu(characterCreationMenu);
         }
         private static void GameOptionOnInit(CharacterCreation characterCreation)
@@ -202,23 +203,23 @@ namespace zCulturedStart
         {
             //Default option CSDefault
             //CSCharCreationOption csOptions;
-            CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=peNBA0WW}Starting Location", null), new TextObject("{=jg3T5AyE}Beginning your new adventure", null), new CharacterCreationOnInit(LocationOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
+            CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=2eNBA0WW}Starting Location", null), new TextObject("{=2g3T5AyE}Beginning your new adventure", null), new CharacterCreationOnInit(LocationOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
             CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(null);
-            characterCreationCategory.AddCategoryOption(new TextObject(("{=5vCHolsH} Near your home in the city where your journey began"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(HomeOnConsequnce), new CharacterCreationApplyFinalEffects(HomeOnAction), new TextObject("{=CvfRsafv} Back to where you started", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject(("{=18CHolsH} Near your home in the city where your journey began"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(HomeOnConsequnce), new CharacterCreationApplyFinalEffects(HomeOnAction), new TextObject("{=CvfRsafv} Back to where you started", null), null, 0, 0, 0);
             
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} In a strange new city (Random).", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(RandStartOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Travelling wide and far you arrive at an unknown city", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=6vCHolsH} In a strange new city (Random).", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(RandStartOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Travelling wide and far you arrive at an unknown city", null), null, 0, 0, 0);
 
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} In a caravan to the Aserai city of Qasira.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(QasariOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You leave the caravan right at the gates", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=7vCHolsH} In a caravan to the Aserai city of Qasira.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(QasariOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You leave the caravan right at the gates", null), null, 0, 0, 0);
 
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} In a caravan to the Battania city of Dunglanys.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(DunglanysOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You leave the caravan right at the gates", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=8vCHolsH} In a caravan to the Battania city of Dunglanys.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(DunglanysOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You leave the caravan right at the gates", null), null, 0, 0, 0);
 
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} On a ship to the Empire city of Zeonica.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(ZeonicaOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You leave the ship and arrive right at the games", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=9vCHolsH} On a ship to the Empire city of Zeonica.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(ZeonicaOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You leave the ship and arrive right at the games", null), null, 0, 0, 0);
 
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} In a caravan to the Sturgia city of Balgard.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(BalgardOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}  You leave the caravan right at the gates", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=0vCHolsH} In a caravan to the Sturgia city of Balgard.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(BalgardOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}  You leave the caravan right at the gates", null), null, 0, 0, 0);
 
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} In a caravan to the Khuzait city of Ortongard.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(OrtongardOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}  You leave the caravan right at the gates", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=4vCHolsH} In a caravan to the Khuzait city of Ortongard.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(OrtongardOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}  You leave the caravan right at the gates", null), null, 0, 0, 0);
 
-            characterCreationCategory.AddCategoryOption(new TextObject("{=5vCHolsH} In a river boat to the Vlandia city of Pravend.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(PravendOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You arrive right at the gates", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=11CHolsH} In a river boat to the Vlandia city of Pravend.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(PravendOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You arrive right at the gates", null), null, 0, 0, 0);
             characterCreation.AddNewMenu(characterCreationMenu);
         }
         private static void CSDoNothingOnApply(CharacterCreation characterCreation)

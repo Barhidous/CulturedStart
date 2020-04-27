@@ -24,7 +24,7 @@ namespace zCulturedStart
         protected override void OnInitialize()
         {
             base.OnInitialize();
-            this._datasource = new CSSkillScreenViewModel(this._screenData);
+            this._datasource = new CSSkillScreenVM(this._screenData);
             _gauntletLayer = new GauntletLayer(100)
             {
                 IsFocusLayer = true
@@ -57,7 +57,7 @@ namespace zCulturedStart
 
         private CSScreenData _screenData;
 
-        private CSSkillScreenViewModel _datasource;
+        private CSSkillScreenVM _datasource;
     }
 
 }

@@ -16,5 +16,11 @@ namespace zCulturedStart
 
         public int _skillpoints;
         public int _maxskill;
+        public int _attributes;
+        public int _maxattributes;
+        public int _focus;
+        public int _maxFocus;
+        
+
     }
 }

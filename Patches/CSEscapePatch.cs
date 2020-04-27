@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
+using TaleWorlds.ObjectSystem;
 using StoryMode;
 using StoryMode.CharacterCreationSystem;
 using TaleWorlds.Localization;
@@ -20,11 +21,11 @@ namespace zCulturedStart
             TextObject backstory;
             if (CSCharCreationOption.CSGameOption==0)
             {
-                backstory = new TextObject("{=jg3T5AyE} Along the way, the inn at which you were staying was attacked by raiders. Your parents were slain and your two youngest siblings seized, but you and your brother survived because...", null);
+                backstory = new TextObject("{=3g3T5AyE} Along the way, the inn at which you were staying was attacked by raiders. Your parents were slain and your two youngest siblings seized, but you and your brother survived because...", null);
             }
             else
             {
-                backstory = new TextObject("{=jg3T5AyE} During your journies you were ambushed by raiders you survived because...", null);
+                backstory = new TextObject("{=4g3T5AyE} During your journies you were ambushed by raiders you survived because...", null);
             }
             MBTextManager.SetTextVariable("EXP_VALUE", 10, false);
             CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=peNBA0WW}Story Background", null), backstory, new CharacterCreationOnInit(CSEscapePatch.EscapeOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
