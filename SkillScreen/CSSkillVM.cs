@@ -10,12 +10,13 @@ using TaleWorlds.Library;
 using TaleWorlds.Core;
 using TaleWorlds.Localization;
 using TaleWorlds.CampaignSystem.ViewModelCollection.CharacterDeveloper;
+using TaleWorlds.CampaignSystem.ViewModelCollection;
 
 namespace zCulturedStart
 {
     class CSSkillVM : ViewModel
     {
-        public CSSkillVM(SkillObject skill, CSSkillScreenVM SkillScreenVM, Action<PerkVM> onStartPerkSelection, CSScreenData screendata)
+        public CSSkillVM(SkillObject skill, CSSkillScreenVM SkillScreenVM,  CSScreenData screendata)//Action<PerkVM> onStartPerkSelection,
         {
             this.Skill = skill;
             this._skill = skill;
@@ -23,8 +24,14 @@ namespace zCulturedStart
             this._screendata = screendata;
             this.SkillId = skill.StringId;
             this.Type = (skill.IsPartySkill ? CSSkillVM.SkillType.Party : (skill.IsLeaderSkill ? CSSkillVM.SkillType.Leader : CSSkillVM.SkillType.Default)).ToString();
-
-
+           
+            this._boundAttributeName = CharacterAttributes.GetCharacterAttribute(this.Skill.CharacterAttributeEnum).Name;
+            this.LearningRateTooltip = new BasicTooltipViewModel(() => CampaignUIHelper.GetLearningRateTooltip(this._boundAttributeCurrentValue, this.CurrentFocusLevel, this.Level, this._heroLevel, this._boundAttributeName));
+            this.LearningLimitTooltip = new BasicTooltipViewModel(() => CampaignUIHelper.GetLearningLimitTooltip(this._boundAttributeCurrentValue, this.CurrentFocusLevel, this._boundAttributeName));
+            this.InitializeValues();
+            this._focusConceptObj = Concept.All.SingleOrDefault((Concept c) => c.StringId == "str_game_objects_skill_focus");
+            this._skillConceptObj = Concept.All.SingleOrDefault((Concept c) => c.StringId == "str_game_objects_skills");
+            this.RefreshValues();
 
         }
 
@@ -47,6 +54,44 @@ namespace zCulturedStart
             this.RefreshCanAddFocus();
         }
 
+        public void InitializeValues()
+        {
+            if (this._SkillScreenVM.GetCharacterDeveloper() == null)
+            {
+                this.Level = 0;
+            }
+            else
+            {
+                this.Level = this._SkillScreenVM.GetCharacterDeveloper().Hero.GetSkillValue(this.Skill);
+                this.NextLevel = this.Level + 1;
+                //this._isInSamePartyAsPlayer = (this._SkillScreenVM.hero.PartyBelongedTo != null && this._SkillScreenVM.hero.PartyBelongedTo == MobileParty.MainParty);
+                this._SkillScreenVM.GetCharacterDeveloper().GetPropertyValue(this.Skill);
+                this.CurrentSkillXP = this._SkillScreenVM.GetCharacterDeveloper().GetSkillXpProgress(this.Skill);
+                this.XpRequiredForNextLevel = Campaign.Current.Models.CharacterDevelopmentModel.GetXpRequiredForSkillLevel(this.Level + 1) - Campaign.Current.Models.CharacterDevelopmentModel.GetXpRequiredForSkillLevel(this.Level);
+                this.ProgressPercentage = 100.0 * (double)this._currentSkillXP / (double)this.XpRequiredForNextLevel;
+                GameTexts.SetVariable("CURRENT_XP", this.CurrentSkillXP.ToString());
+                GameTexts.SetVariable("LEVEL_MAX_XP", this.XpRequiredForNextLevel.ToString());
+                this.ProgressHint = new HintViewModel(GameTexts.FindText("str_current_xp_over_max", null).ToString(), null);
+                this.ProgressText = GameTexts.FindText("str_current_xp_over_max", null).ToString();
+                GameTexts.SetVariable("REQUIRED_XP_FOR_NEXT_LEVEL", this.XpRequiredForNextLevel - this.CurrentSkillXP);
+                this.SkillXPHint = new HintViewModel(GameTexts.FindText("str_skill_xp_hint", null).ToString(), null);
+
+                this._orgFocusAmount = this._SkillScreenVM.GetCharacterDeveloper().GetFocus(this.Skill);
+                this.CurrentFocusLevel = this._orgFocusAmount;
+                this.CreateLists();
+            }
+        }
+        public void CreateLists()
+        {
+            this.SkillEffects.Clear();
+            int skillValue = this._SkillScreenVM.GetCharacterDeveloper().Hero.GetSkillValue(this.Skill);
+            foreach (SkillEffect effect in from x in DefaultSkillEffects.GetAllSkillEffects()
+                                           where x.EffectedSkills.Contains(this.Skill)
+                                           select x)
+            {
+                this.SkillEffects.Add(new BindingListStringItem(CampaignUIHelper.GetSkillEffectText(effect, skillValue)));
+            }
+        }
         private void ExecuteInspect()
         {
             _SkillScreenVM.SetCurrentSkill(this);
@@ -80,11 +125,178 @@ namespace zCulturedStart
                 Game.Current.EventManager.TriggerEvent<FocusAddedByPlayerEvent>(new FocusAddedByPlayerEvent(this._SkillScreenVM.hero, this._skill));
             }
         }
+
+        private void ExecuteShowFocusConcept()
+        {
+            if (this._focusConceptObj != null)
+            {
+                Campaign.Current.EncyclopediaManager.GoToLink(this._focusConceptObj.EncyclopediaLink);
+            }
+        }
+
+        
+        private void ExecuteShowSkillConcept()
+        {
+            if (this._focusConceptObj != null)
+            {
+                Campaign.Current.EncyclopediaManager.GoToLink(this._skillConceptObj.EncyclopediaLink);
+            }
+        }
+        [DataSourceProperty]
+        public MBBindingList<BindingListStringItem> SkillEffects
+        {
+            get
+            {
+                return this._skillEffects;
+            }
+            set
+            {
+                if (value != this._skillEffects)
+                {
+                    this._skillEffects = value;
+                    base.OnPropertyChanged("SkillEffects");
+                }
+            }
+        }
+        [DataSourceProperty]
+        public HintViewModel ProgressHint
+        {
+            get
+            {
+                return this._progressHint;
+            }
+            set
+            {
+                if (value != this._progressHint)
+                {
+                    this._progressHint = value;
+                    base.OnPropertyChanged("ProgressHint");
+                }
+            }
+        }
+        private HintViewModel _progressHint;
+        [DataSourceProperty]
+        public HintViewModel SkillXPHint
+        {
+            get
+            {
+                return this._skillXPHint;
+            }
+            set
+            {
+                if (value != this._skillXPHint)
+                {
+                    this._skillXPHint = value;
+                    base.OnPropertyChanged("SkillXPHint");
+                }
+            }
+        }
+        private HintViewModel _skillXPHint;
+        [DataSourceProperty]
+        public string ProgressText
+        {
+            get
+            {
+                return this._progressText;
+            }
+            set
+            {
+                if (value != this._progressText)
+                {
+                    this._progressText = value;
+                    base.OnPropertyChanged("ProgressText");
+                }
+            }
+        }
+        private string _progressText;
+        [DataSourceProperty]
+        public int CurrentSkillXP
+        {
+            get
+            {
+                return this._currentSkillXP;
+            }
+            set
+            {
+                if (value != this._currentSkillXP)
+                {
+                    this._currentSkillXP = value;
+                    base.OnPropertyChanged("CurrentSkillXP");
+                }
+            }
+        }
+        [DataSourceProperty]
+        public double ProgressPercentage
+        {
+            get
+            {
+                return this._progressPercentage;
+            }
+            set
+            {
+                if (value != this._progressPercentage)
+                {
+                    this._progressPercentage = value;
+                    base.OnPropertyChanged("ProgressPercentage");
+                }
+            }
+        }
+        [DataSourceProperty]
+        public BasicTooltipViewModel LearningLimitTooltip
+        {
+            get
+            {
+                return this._learningLimitTooltip;
+            }
+            set
+            {
+                if (value != this._learningLimitTooltip)
+                {
+                    this._learningLimitTooltip = value;
+                    base.OnPropertyChanged("LearningLimitTooltip");
+                }
+            }
+        }
+        [DataSourceProperty]
+        public int XpRequiredForNextLevel
+        {
+            get
+            {
+                return this._xpRequiredForNextLevel;
+            }
+            set
+            {
+                if (value != this._xpRequiredForNextLevel)
+                {
+                    this._xpRequiredForNextLevel = value;
+                    base.OnPropertyChanged("XpRequiredForNextLevel");
+                }
+            }
+        }
+        private int _xpRequiredForNextLevel;
+
+        [DataSourceProperty]
+        public BasicTooltipViewModel LearningRateTooltip
+        {
+            get
+            {
+                return this._learningRateTooltip;
+            }
+            set
+            {
+                if (value != this._learningRateTooltip)
+                {
+                    this._learningRateTooltip = value;
+                    base.OnPropertyChanged("LearningRateTooltip");
+                }
+            }
+        }
         private int _boundAttributeCurrentValue
         {
             get
             {
-                return this._SkillScreenVM.GetCurrentAttributePoint(this.Skill.CharacterAttributeEnum);
+                return 1;
+                //return this._SkillScreenVM.GetCurrentAttributePoint(this.Skill.CharacterAttributeEnum);
             }
         }
         private int _heroLevel
@@ -344,6 +556,15 @@ namespace zCulturedStart
         private CSSkillScreenVM _SkillScreenVM;
         private CSScreenData _screendata;
         private TextObject _boundAttributeName;
+        private readonly Concept _focusConceptObj;
+        private readonly Concept _skillConceptObj;
+        private BasicTooltipViewModel _learningLimitTooltip;
+        private BasicTooltipViewModel _learningRateTooltip;
+        private double _progressPercentage;
+        private int _currentSkillXP;
+        private MBBindingList<BindingListStringItem> _skillEffects;
+        private int _orgFocusAmount;
+
         private enum SkillType
         {
             // Token: 0x04000BCF RID: 3023

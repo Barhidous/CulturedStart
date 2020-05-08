@@ -138,6 +138,8 @@ namespace zCulturedStart
                     return Settlement.Find("town_K4");
                 case 7:
                     return Settlement.Find("town_V3");
+                case 8:
+                    return CSCharCreationOption.cultureSettlement(Hero.MainHero);
                 default:
                     return Settlement.Find("tutorial_training_field");
             }

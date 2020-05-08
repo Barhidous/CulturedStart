@@ -47,12 +47,14 @@ namespace zCulturedStart
 
             //Kingdom Start
             TextObject shortdesc = new TextObject("", null);
+            
             TextObject fulldesc = new TextObject("With the support of companions you have gathered an army. With limited funds and food you decided it's time for action.", null);
 
             switch (CharacterCreationContent.Instance.Culture.StringId)
             {
                 case "sturgia":
-                    shortdesc = new TextObject("{=f6CSm3sP}Leading a Viking Expedition", null);                    
+                    shortdesc = new TextObject("{=f6CSm3sP}Leading a Viking Expedition", null);       
+                    
                     break;
                 case "aserai":
                     shortdesc = new TextObject("{=f5CSm3sP}Leading a Jihad", null);
@@ -71,9 +73,13 @@ namespace zCulturedStart
                     break;
                 default:
                     break;
-            }                    
-
+            }
+            
             characterCreationCategory.AddCategoryOption(shortdesc, new List<SkillObject> { DefaultSkills.Leadership, DefaultSkills.Steward}, CharacterAttributesEnum.Social, 1, 15, 1, null, new CharacterCreationOnSelect(CSKingdomOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), fulldesc, null, 0, 351, 0);
+
+            //Holding Start
+            TextObject Holdshortdesc = new TextObject("{=f10CSm3sP}You acquired a castle", null);
+            characterCreationCategory.AddCategoryOption(Holdshortdesc, new List<SkillObject> { DefaultSkills.Leadership, DefaultSkills.Steward }, CharacterAttributesEnum.Social, 1, 15, 1, null, new CharacterCreationOnSelect(CSHoldingOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=f11CSm3sP}You acquired a castle through your own means and declared yourself a kingdom for better or worse.", null), null, 0, 351, 0);
             characterCreation.AddNewMenu(characterCreationMenu);
         }
         
@@ -105,8 +111,11 @@ namespace zCulturedStart
         {
             CSCharCreationOption.CSSelectOption = 7;
         }
+        private static void CSHoldingOnConsequence(CharacterCreation characterCreation)
+        {
+            CSCharCreationOption.CSSelectOption = 8;
+        }
 
-       
 
         //Not using right now investigate if anything has to happen
         private static void BranchsOnInit(CharacterCreation characterCreation)
@@ -205,8 +214,12 @@ namespace zCulturedStart
             //CSCharCreationOption csOptions;
             CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=2eNBA0WW}Starting Location", null), new TextObject("{=2g3T5AyE}Beginning your new adventure", null), new CharacterCreationOnInit(LocationOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
             CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(null);
+            characterCreationCategory.AddCategoryOption(new TextObject(("{=20CHolsH} At your castle"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, new CharacterCreationOnCondition(AtCastleOnCondition), new CharacterCreationOnSelect(AtCastleOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} At your newly aquired castle", null), null, 0, 0, 0);
+
             characterCreationCategory.AddCategoryOption(new TextObject(("{=18CHolsH} Near your home in the city where your journey began"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(HomeOnConsequnce), new CharacterCreationApplyFinalEffects(HomeOnAction), new TextObject("{=CvfRsafv} Back to where you started", null), null, 0, 0, 0);
+
             
+
             characterCreationCategory.AddCategoryOption(new TextObject("{=6vCHolsH} In a strange new city (Random).", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(RandStartOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Travelling wide and far you arrive at an unknown city", null), null, 0, 0, 0);
 
             characterCreationCategory.AddCategoryOption(new TextObject("{=7vCHolsH} In a caravan to the Aserai city of Qasira.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(QasariOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You leave the caravan right at the gates", null), null, 0, 0, 0);
@@ -220,6 +233,8 @@ namespace zCulturedStart
             characterCreationCategory.AddCategoryOption(new TextObject("{=4vCHolsH} In a caravan to the Khuzait city of Ortongard.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(OrtongardOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}  You leave the caravan right at the gates", null), null, 0, 0, 0);
 
             characterCreationCategory.AddCategoryOption(new TextObject("{=11CHolsH} In a river boat to the Vlandia city of Pravend.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(PravendOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} You arrive right at the gates", null), null, 0, 0, 0);
+
+
             characterCreation.AddNewMenu(characterCreationMenu);
         }
         private static void CSDoNothingOnApply(CharacterCreation characterCreation)
@@ -229,7 +244,8 @@ namespace zCulturedStart
         {
             CSCharCreationOption.CSLocationOption = 0; //Home town
         }
-        private static void HomeOnAction(CharacterCreation characterCreation)        {
+        private static void HomeOnAction(CharacterCreation characterCreation)        
+        {
             
         }
         private static void RandStartOnConsequnce(CharacterCreation characterCreation)
@@ -260,7 +276,12 @@ namespace zCulturedStart
         {
             CSCharCreationOption.CSLocationOption = 7; //Vlandia   
         }
-        
+
+        private static void AtCastleOnConsequnce(CharacterCreation characterCreation)
+        {
+            CSCharCreationOption.CSLocationOption = 8; //Castle   
+        }
+
         private static void LocationOnInit(CharacterCreation characterCreation)
         {
             
@@ -268,6 +289,15 @@ namespace zCulturedStart
 
         }
         
+        private static bool AtCastleOnCondition()
+        {
+            if(CSCharCreationOption.CSSelectOption == 8)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public static bool FreePlayLoadedOnCondition()
         {
             //Loop to see if FreePlay is loaded

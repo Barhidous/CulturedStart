@@ -86,8 +86,29 @@ namespace zCulturedStart
                     CSSetEquip(Hero.MainHero, 5);
                     Hero.MainHero.Clan.Influence = 100;
                     CSAddCompanionAsArmy(2);
-                    CSAddCompanion(1);
-                   
+                    CSAddCompanion(1);                   
+                    break;
+                case 8://Holding
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 2000, true);
+                    PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 15, true);
+                    Settlement Castle;
+                    CSGiveCastle(out Castle);
+                    if (CSCharCreationOption.CSLocationOption == 8)
+                    {
+                        MobileParty.MainParty.Position2D = Castle.GatePosition;
+                        MapState mapstate;
+                        mapstate = (GameStateManager.Current.ActiveState as MapState);
+                        mapstate.Handler.TeleportCameraToMainParty();
+                    }
+                    CSAddTroop(1, 31, PartyBase.MainParty);
+                    CSAddTroop(2, 20, PartyBase.MainParty);
+                    CSAddTroop(3, 14, PartyBase.MainParty);
+                    CSAddTroop(4, 10, PartyBase.MainParty);
+                    CSAddTroop(5, 6, PartyBase.MainParty);
+                    CSCreateKingdom();
+                    CSSetEquip(Hero.MainHero, 5);
+                    CSAddCompanionAsArmy(1);                   
+                                   
                     break;
                 default:
                     break;
@@ -117,14 +138,22 @@ namespace zCulturedStart
                 AccessTools.Field(Campaign.Current.GetType(), "_kingdoms").SetValue(Campaign.Current, new MBReadOnlyList<Kingdom>(curkingdoms));
             }
         }
+        public static void CSGiveCastle(out Settlement Castle)
+        {
+            Castle = (from settlement in Settlement.All
+                                 where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
+                                 select settlement).GetRandomElement<Settlement>();
+            ChangeOwnerOfSettlementAction.ApplyByDefault(Hero.MainHero, Castle);
+        }
         private static void CSAddCompanionAsArmy(int NoToAdd)
         {
             Hero mainhero = Hero.MainHero;
             for (int i = 0; i < NoToAdd; i++) 
             {
-            
+                string Locculture = CSCharCreationOption.CSOptionSettlement().Culture.StringId;
+
                 CharacterObject wanderer = (from x in CharacterObject.Templates
-                                            where x.Occupation == Occupation.Wanderer && x.Culture.StringId == mainhero.Culture.StringId
+                                            where x.Occupation == Occupation.Wanderer && (x.Culture.StringId == mainhero.Culture.StringId || x.Culture.StringId == Locculture)
                                             select x).GetRandomElement<CharacterObject>();
                 
                 Settlement randomElement = (from settlement in Settlement.All
@@ -151,9 +180,9 @@ namespace zCulturedStart
             Hero mainhero = Hero.MainHero;
             for (int i = 0; i < NoToAdd; i++)
             {
-
+                string Locculture = CSCharCreationOption.CSOptionSettlement().Culture.StringId;
                 CharacterObject wanderer = (from x in CharacterObject.Templates
-                                            where x.Occupation == Occupation.Wanderer && x.Culture.StringId == mainhero.Culture.StringId
+                                            where x.Occupation == Occupation.Wanderer && (x.Culture.StringId == mainhero.Culture.StringId || x.Culture.StringId == Locculture)
                                             select x).GetRandomElement<CharacterObject>();                
                 Settlement randomElement = (from settlement in Settlement.All
                                             where settlement.Culture == wanderer.Culture && settlement.IsTown
@@ -236,7 +265,7 @@ namespace zCulturedStart
                 CharacterRelationManager.SetHeroRelation(mainhero, alllord, -5);
             };
             CharacterRelationManager.SetHeroRelation(mainhero, lord, -50);
-            ChangeCrimeRatingAction.Apply(lord.MapFaction, 35, false);
+            ChangeCrimeRatingAction.Apply(lord.MapFaction, 49, false);
             //float test = Campaign.Current.
 
         }
