@@ -80,6 +80,13 @@ namespace zCulturedStart
             //Holding Start
             TextObject Holdshortdesc = new TextObject("{=f10CSm3sP}You acquired a castle", null);
             characterCreationCategory.AddCategoryOption(Holdshortdesc, new List<SkillObject> { DefaultSkills.Leadership, DefaultSkills.Steward }, CharacterAttributesEnum.Social, 1, 15, 1, null, new CharacterCreationOnSelect(CSHoldingOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=f11CSm3sP}You acquired a castle through your own means and declared yourself a kingdom for better or worse.", null), null, 0, 351, 0);
+
+            //Vassal castle start
+            characterCreationCategory.AddCategoryOption(new TextObject("{=17CHolsH} A landed vassal of " + CharacterCreationContent.Instance.Culture, null), new List<SkillObject> { DefaultSkills.Steward }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSCastleVassalOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}A young noble who came into an arrangement with the king for land", null), null, 0, 150, 0);
+
+            //Escape Prisoner start
+            characterCreationCategory.AddCategoryOption(new TextObject("{=18CHolsH} An escaped prsioner of a lord of " + CharacterCreationContent.Instance.Culture, null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSEscapeOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv}A poor prisoner of petty crimes who managed to break his shackles with a rock and fled", null), null, 0, 0, 0);
+
             characterCreation.AddNewMenu(characterCreationMenu);
         }
         
@@ -115,9 +122,16 @@ namespace zCulturedStart
         {
             CSCharCreationOption.CSSelectOption = 8;
         }
+        private static void CSCastleVassalOnConsequence(CharacterCreation characterCreation)
+        {
+            CSCharCreationOption.CSSelectOption = 9;
+        }
+        private static void CSEscapeOnConsequence(CharacterCreation characterCreation)
+        {
+            CSCharCreationOption.CSSelectOption = 10;
+        }
 
-
-        //Not using right now investigate if anything has to happen
+        
         private static void BranchsOnInit(CharacterCreation characterCreation)
         {
             //Init 
@@ -216,6 +230,8 @@ namespace zCulturedStart
             CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(null);
             characterCreationCategory.AddCategoryOption(new TextObject(("{=20CHolsH} At your castle"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, new CharacterCreationOnCondition(AtCastleOnCondition), new CharacterCreationOnSelect(AtCastleOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} At your newly aquired castle", null), null, 0, 0, 0);
 
+            characterCreationCategory.AddCategoryOption(new TextObject(("{=21CHolsH} Escaping from your captor"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, new CharacterCreationOnCondition(EscapingOnCondition), new CharacterCreationOnSelect(EscapingOnConsequnce), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CvfRsafv} Having just escaped", null), null, 0, 0, 0);
+
             characterCreationCategory.AddCategoryOption(new TextObject(("{=18CHolsH} Near your home in the city where your journey began"), null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(HomeOnConsequnce), new CharacterCreationApplyFinalEffects(HomeOnAction), new TextObject("{=CvfRsafv} Back to where you started", null), null, 0, 0, 0);
 
             
@@ -281,17 +297,28 @@ namespace zCulturedStart
         {
             CSCharCreationOption.CSLocationOption = 8; //Castle   
         }
-
+        private static void EscapingOnConsequnce(CharacterCreation characterCreation)
+        {
+            CSCharCreationOption.CSLocationOption = 9; //escape
+            
+        }
         private static void LocationOnInit(CharacterCreation characterCreation)
         {
             
 
 
         }
-        
+        private static bool EscapingOnCondition()
+        {
+            if (CSCharCreationOption.CSSelectOption == 10)
+            {
+                return true;
+            }
+            return false;
+        }
         private static bool AtCastleOnCondition()
         {
-            if(CSCharCreationOption.CSSelectOption == 8)
+            if(CSCharCreationOption.CSSelectOption == 8 || CSCharCreationOption.CSSelectOption == 9)
             {
                 return true;
             }

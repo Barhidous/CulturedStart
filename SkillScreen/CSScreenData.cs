@@ -8,10 +8,14 @@ namespace zCulturedStart
 {
     class CSScreenData
     {
-        public CSScreenData(int skillpoints, int maxskill)
+        public CSScreenData(int skillpoints, int maxskill, int attributes, int maxattributes, int focus, int maxfocus)
         {
             this._skillpoints = skillpoints;
             this._maxskill = skillpoints;
+            this._attributes = attributes;
+            this._maxattributes = maxattributes;
+            this._focus = focus;
+            this._maxFocus = maxfocus;
         }
 
         public int _skillpoints;

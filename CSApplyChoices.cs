@@ -27,7 +27,8 @@ namespace zCulturedStart
             GiveGoldAction.ApplyBetweenCharacters(Hero.MainHero, null, Hero.MainHero.Gold, true);
             PartyBase.MainParty.ItemRoster.RemoveAllItems();
             int Option = CSCharCreationOption.CSSelectOption;
-            switch (Option){
+            Settlement Castle;
+            switch (Option) {
                 case 1: //Default
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2, true);
@@ -63,15 +64,15 @@ namespace zCulturedStart
                     foreach (Kingdom x in Campaign.Current.Kingdoms)
                     {
                         ChangeCrimeRatingAction.Apply(x.MapFaction, 50, false);
-                       // DeclareWarAction.Apply(x, Hero.MainHero.MapFaction);
-                    }                    
+                        // DeclareWarAction.Apply(x, Hero.MainHero.MapFaction);
+                    }
                     break;
                 case 6://Vassal
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2, true);
                     SetVassal(Hero.MainHero);
                     CSSetEquip(Hero.MainHero, 3);
-                    CSAddTroop(1, 10,PartyBase.MainParty);
+                    CSAddTroop(1, 10, PartyBase.MainParty);
                     CSAddTroop(2, 4, PartyBase.MainParty);
                     break;
                 case 7://Kingdom
@@ -86,20 +87,14 @@ namespace zCulturedStart
                     CSSetEquip(Hero.MainHero, 5);
                     Hero.MainHero.Clan.Influence = 100;
                     CSAddCompanionAsArmy(2);
-                    CSAddCompanion(1);                   
+                    CSAddCompanion(1);
                     break;
                 case 8://Holding
                     GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 2000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 15, true);
-                    Settlement Castle;
+
                     CSGiveCastle(out Castle);
-                    if (CSCharCreationOption.CSLocationOption == 8)
-                    {
-                        MobileParty.MainParty.Position2D = Castle.GatePosition;
-                        MapState mapstate;
-                        mapstate = (GameStateManager.Current.ActiveState as MapState);
-                        mapstate.Handler.TeleportCameraToMainParty();
-                    }
+
                     CSAddTroop(1, 31, PartyBase.MainParty);
                     CSAddTroop(2, 20, PartyBase.MainParty);
                     CSAddTroop(3, 14, PartyBase.MainParty);
@@ -107,21 +102,74 @@ namespace zCulturedStart
                     CSAddTroop(5, 6, PartyBase.MainParty);
                     CSCreateKingdom();
                     CSSetEquip(Hero.MainHero, 5);
-                    CSAddCompanionAsArmy(1);                   
-                                   
+                    CSAddCompanionAsArmy(1);
+
+                    break;
+                case 9://Vassal
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1000, true);
+                    PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2, true);
+                    SetVassal(Hero.MainHero);
+                    //Settlement Castle;
+                    CSGiveCastle(out Castle);
+                    CSSetEquip(Hero.MainHero, 3);
+                    CSAddTroop(1, 10, PartyBase.MainParty);
+                    CSAddTroop(2, 4, PartyBase.MainParty);
+                    break;
+                case 10:
+                    PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 1, true);
+                    EscapedPrisoner();
                     break;
                 default:
                     break;
-            }            
+            }
         }
         public static void CSSetEquip(Hero hero, int tier)
         {
-            
-            Equipment equipment = (from y in CharacterObject.All
-                                   where y.Tier == tier && y.Culture.StringId == hero.Culture.StringId && !y.IsHero
-                                   select y).GetRandomElement<CharacterObject>().Equipment;           
+            SkillObject HBestSkill1; SkillObject HBestSkill2; SkillObject HBestSkill3;
+            Dictionary<SkillObject, int> HeroSkills = new Dictionary<SkillObject, int>();
+            CharacterSkills skills = hero.GetHeroSkills();
+            foreach (SkillObject skill in (from s in SkillObject.All
+                                           where s.IsPersonalSkill
+                                           group s by s.CharacterAttribute.Id).SelectMany((IGrouping<MBGUID, SkillObject> s) => s).ToList<SkillObject>())
+            {
+                HeroSkills.Add(skill, skills.GetPropertyValue(skill)); //Add All the heros personal skills
+            }
+            HeroSkills.OrderByDescending(x => x.Value);//Sorts dictionary by highest skills    
+            foreach (SkillObject skill in HeroSkills.Keys)
+            {
+
+            }
+            List<CharacterObject> CharOptions = (from y in CharacterObject.All //Gets all possible troop options
+                                                 where y.Tier == tier && y.Culture.StringId == hero.Culture.StringId && !y.IsHero
+                                                 select y).ToList();
+            CharOptions.Shuffle<CharacterObject>(); //shuffling to make it so there is still some possiblity of random. So x Cultue + x skill combo doesn't always get same
+            CharacterObject IdealTroop = null;
+            float ratio1 = 0; float ratio2 = 0; float ratio3 = 0; float ratiocur;
+
+
+            foreach (CharacterObject character in CharOptions) //Loop them and figure out which is the best option
+            {
+                Dictionary<SkillObject, int> troopskills = new Dictionary<SkillObject, int>();
+                foreach (SkillObject troopskill in (from t in SkillObject.All
+                                                    where t.IsPersonalSkill
+                                                    group t by t.CharacterAttribute.Id).SelectMany((IGrouping<MBGUID, SkillObject> t) => t).ToList<SkillObject>())
+                {
+                    troopskills.Add(troopskill, character.GetSkillValue(troopskill));
+                }
+
+
+
+
+            }
+            if (IdealTroop == null) //Fall back if idea troop logic fails
+            {
+                IdealTroop = (from y in CharacterObject.All
+                              where y.Tier == tier && y.Culture.StringId == hero.Culture.StringId && !y.IsHero
+                              select y).GetRandomElement<CharacterObject>();
+            }
+            Equipment equipment = IdealTroop.Equipment;
             hero.BattleEquipment.FillFrom(equipment);
-           
+
         }
         public static void CSCreateKingdom()
         {//This is from cheat, works but not thourughly tested
@@ -141,21 +189,28 @@ namespace zCulturedStart
         public static void CSGiveCastle(out Settlement Castle)
         {
             Castle = (from settlement in Settlement.All
-                                 where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
-                                 select settlement).GetRandomElement<Settlement>();
+                      where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
+                      select settlement).GetRandomElement<Settlement>();
             ChangeOwnerOfSettlementAction.ApplyByDefault(Hero.MainHero, Castle);
+            if (CSCharCreationOption.CSLocationOption == 8)
+            {
+                MobileParty.MainParty.Position2D = Castle.GatePosition;
+                MapState mapstate;
+                mapstate = (GameStateManager.Current.ActiveState as MapState);
+                mapstate.Handler.TeleportCameraToMainParty();
+            }
         }
         private static void CSAddCompanionAsArmy(int NoToAdd)
         {
             Hero mainhero = Hero.MainHero;
-            for (int i = 0; i < NoToAdd; i++) 
+            for (int i = 0; i < NoToAdd; i++)
             {
                 string Locculture = CSCharCreationOption.CSOptionSettlement().Culture.StringId;
 
                 CharacterObject wanderer = (from x in CharacterObject.Templates
                                             where x.Occupation == Occupation.Wanderer && (x.Culture.StringId == mainhero.Culture.StringId || x.Culture.StringId == Locculture)
                                             select x).GetRandomElement<CharacterObject>();
-                
+
                 Settlement randomElement = (from settlement in Settlement.All
                                             where settlement.Culture == wanderer.Culture && settlement.IsTown
                                             select settlement).GetRandomElement<Settlement>();
@@ -171,8 +226,8 @@ namespace zCulturedStart
                 CampaignEventDispatcher.Instance.OnHeroCreated(hero, false);
                 bool fromMainclan = true;
                 MobilePartyHelper.CreateNewClanMobileParty(hero, mainhero.Clan, out fromMainclan);
-                
-                
+
+
             }
         }
         private static void CSAddCompanion(int NoToAdd)
@@ -183,7 +238,7 @@ namespace zCulturedStart
                 string Locculture = CSCharCreationOption.CSOptionSettlement().Culture.StringId;
                 CharacterObject wanderer = (from x in CharacterObject.Templates
                                             where x.Occupation == Occupation.Wanderer && (x.Culture.StringId == mainhero.Culture.StringId || x.Culture.StringId == Locculture)
-                                            select x).GetRandomElement<CharacterObject>();                
+                                            select x).GetRandomElement<CharacterObject>();
                 Settlement randomElement = (from settlement in Settlement.All
                                             where settlement.Culture == wanderer.Culture && settlement.IsTown
                                             select settlement).GetRandomElement<Settlement>();
@@ -216,7 +271,7 @@ namespace zCulturedStart
                                                where x.Tier == Tier && x.Culture.StringId == Hero.MainHero.Culture.StringId && !x.IsHero && (x.Occupation == Occupation.Soldier || x.Occupation == Occupation.Mercenary)
                                                select x).GetRandomElement<CharacterObject>();
 
-            partyBase.AddElementToMemberRoster(characterObject, num, false);            
+            partyBase.AddElementToMemberRoster(characterObject, num, false);
         }
         private static void CSAddLooter(int num) //Dual purpose cause lazy, adds loots and set players gear as looter
         {
@@ -225,19 +280,19 @@ namespace zCulturedStart
             Hero.MainHero.BattleEquipment.FillFrom(characterObject.Equipment);
             Hero.MainHero.CivilianEquipment.FillFrom(characterObject.Equipment);
         }
-        
+
         private static void AddExiledHero()
         {
             Hero mainhero = Hero.MainHero;
             CharacterObject wanderer = (from x in CharacterObject.Templates
                                         where x.Occupation == Occupation.Wanderer && x.Culture.StringId == mainhero.Culture.StringId
-                                        select x).GetRandomElement<CharacterObject>();            
-            
+                                        select x).GetRandomElement<CharacterObject>();
+
             Equipment equipment = (from y in CharacterObject.All
-                                   where y.Level >20 && y.Culture.StringId == wanderer.Culture.StringId && !y.IsHero && y.Tier > 4
+                                   where y.Level > 20 && y.Culture.StringId == wanderer.Culture.StringId && !y.IsHero && y.Tier > 4
                                    select y).GetRandomElement<CharacterObject>().Equipment;
             Equipment equipmentMC = (from z in CharacterObject.All
-                                     where z.Tier == 4 && z.Culture.StringId == wanderer.Culture.StringId && !z.IsHero 
+                                     where z.Tier == 4 && z.Culture.StringId == wanderer.Culture.StringId && !z.IsHero
                                      select z).GetRandomElement<CharacterObject>().Equipment;
             Settlement randomElement = (from settlement in Settlement.All
                                         where settlement.Culture == wanderer.Culture && settlement.IsTown
@@ -267,6 +322,31 @@ namespace zCulturedStart
             CharacterRelationManager.SetHeroRelation(mainhero, lord, -50);
             ChangeCrimeRatingAction.Apply(lord.MapFaction, 49, false);
             //float test = Campaign.Current.
+
+        }
+
+        private static void EscapedPrisoner()//Escaped Prisoner start 
+        {
+            Hero mainhero = Hero.MainHero;
+            Hero lord = Hero.FindAll((Hero tmp) => (tmp.Culture.StringId == mainhero.Culture.StringId) && tmp.IsAlive && !tmp.MapFaction.IsMinorFaction && tmp.IsPartyLeader && tmp.PartyBelongedTo.IsHolding == false).GetRandomElement<Hero>();
+            
+            if (lord != null) {
+                Vec2 escapePosition = lord.PartyBelongedTo.Position2D;
+                CharacterRelationManager.SetHeroRelation(mainhero, lord, -50);           
+            
+
+                if (CSCharCreationOption.CSLocationOption == 9) { 
+                    MobileParty.MainParty.Position2D = escapePosition;
+                    MapState mapstate;
+                    mapstate = (GameStateManager.Current.ActiveState as MapState);
+                    mapstate.Handler.TeleportCameraToMainParty();
+                }
+            }
+            //Using Looter gear as baseline
+            CharacterObject characterObject = MBObjectManager.Instance.GetObject<CharacterObject>("looter");            
+            Hero.MainHero.BattleEquipment.FillFrom(characterObject.Equipment);
+            Hero.MainHero.CivilianEquipment.FillFrom(characterObject.Equipment);
+
 
         }
     }
