@@ -20,7 +20,7 @@ namespace zCulturedStart
             CharacterObject.PlayerCharacter.Culture = CharacterCreationContent.Instance.Culture;
             Clan.PlayerClan.Culture = CharacterCreationContent.Instance.Culture;
             Settlement settlement = CSCharCreationOption.cultureSettlement(Hero.MainHero);
-            Clan.PlayerClan.InitializeHomeSettlement(settlement);
+            Clan.PlayerClan.UpdateHomeSettlement(settlement);
             Hero.MainHero.BornSettlement = Clan.PlayerClan.HomeSettlement;
             
             return false;

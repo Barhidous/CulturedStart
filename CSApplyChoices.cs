@@ -34,20 +34,20 @@ namespace zCulturedStart
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2, true);
                     break;
                 case 2: //Merchant
-                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 800, true);
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1600, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(MBObjectManager.Instance.GetObject<ItemObject>("mule"), 5);
                     CSAddTroop(1, 5, PartyBase.MainParty);
                     CSAddTroop(2, 3, PartyBase.MainParty);
                     break;
                 case 3: //Exiled Option
-                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1500, true);
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 3000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2, true);
                     AddExiledHero();
                     ExiledDmgRelation();
                     break;
                 case 4: // Merc
-                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 125, true);
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 250, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 1, true);
                     CSAddTroop(1, 10, PartyBase.MainParty);
                     CSAddTroop(2, 5, PartyBase.MainParty);
@@ -68,7 +68,7 @@ namespace zCulturedStart
                     }
                     break;
                 case 6://Vassal
-                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1000, true);
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 3000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2, true);
                     SetVassal(Hero.MainHero);
                     CSSetEquip(Hero.MainHero, 3);
@@ -76,7 +76,7 @@ namespace zCulturedStart
                     CSAddTroop(2, 4, PartyBase.MainParty);
                     break;
                 case 7://Kingdom
-                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 4000, true);
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 8000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 15, true);
                     CSAddTroop(1, 31, PartyBase.MainParty);
                     CSAddTroop(2, 20, PartyBase.MainParty);
@@ -90,7 +90,7 @@ namespace zCulturedStart
                     CSAddCompanion(1);
                     break;
                 case 8://Holding
-                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 2000, true);
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 10000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 15, true);
 
                     CSGiveCastle(out Castle);
@@ -106,7 +106,7 @@ namespace zCulturedStart
 
                     break;
                 case 9://Vassal
-                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 1000, true);
+                    GiveGoldAction.ApplyBetweenCharacters(null, Hero.MainHero, 10000, true);
                     PartyBase.MainParty.ItemRoster.AddToCounts(DefaultItems.Grain, 2, true);
                     SetVassal(Hero.MainHero);
                     //Settlement Castle;
@@ -191,7 +191,7 @@ namespace zCulturedStart
             Castle = (from settlement in Settlement.All
                       where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
                       select settlement).GetRandomElement<Settlement>();
-            ChangeOwnerOfSettlementAction.ApplyByDefault(Hero.MainHero, Castle);
+            ChangeOwnerOfSettlementAction.ApplyBySiege(Hero.MainHero, Hero.MainHero, Castle);
             if (CSCharCreationOption.CSLocationOption == 8)
             {
                 MobileParty.MainParty.Position2D = Castle.GatePosition;
@@ -300,7 +300,7 @@ namespace zCulturedStart
             //wanderer.Equipment.FillFrom(equipment);
             Hero hero = HeroCreator.CreateSpecialHero(wanderer, randomElement, null, null, 33);
             Campaign.Current.GetCampaignBehavior<IHeroCreationCampaignBehavior>().DeriveSkillsFromTraits(hero, wanderer);
-            GiveGoldAction.ApplyBetweenCharacters(null, hero, 2000, true);
+            GiveGoldAction.ApplyBetweenCharacters(null, hero, 4000, true);
             hero.BattleEquipment.FillFrom(equipment);
             mainhero.BattleEquipment.FillFrom(equipmentMC);
             hero.HasMet = true;

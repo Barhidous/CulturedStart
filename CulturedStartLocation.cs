@@ -9,10 +9,12 @@ using TaleWorlds.MountAndBlade;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Library;
+using System.Reflection;
 using HarmonyLib;
 using StoryMode;
 using StoryMode.Behaviors;
 using StoryMode.StoryModePhases;
+using StoryMode.StoryModeObjects;
 
 
 namespace zCulturedStart
@@ -27,15 +29,23 @@ namespace zCulturedStart
         
         private static bool Prefix(TrainingFieldCampaignBehavior __instance)
         {
-            if (!CultureStartOptions.FreePlayLoadedOnCondition()) { 
-                Hero brother = StoryMode.StoryMode.Current.MainStoryLine.Brother;
-                PartyBase.MainParty.MemberRoster.RemoveTroop(brother.CharacterObject, 1, default(UniqueTroopDescriptor), 0);
+            if (!CultureStartOptions.FreePlayLoadedOnCondition()) {                
+                foreach (CharacterObject troop in PartyBase.MainParty.MemberRoster.Troops.ToList<CharacterObject>())
+                {
+                    if (!troop.IsPlayerCharacter)
+                    {
+                        PartyBase.MainParty.MemberRoster.RemoveTroop(troop, 1, default(UniqueTroopDescriptor), 0);
+                        
+                    }
+                }                
                 //Setting Various extra values to try and match usual complete tutorial phase to make sure events fire.
                 AccessTools.Field(typeof(TrainingFieldCampaignBehavior), "_talkedWithBrotherForTheFirstTime").SetValue(__instance, true);
                 TutorialPhase.Instance.PlayerTalkedWithBrotherForTheFirstTime();
+                
+                Hero brother = (Hero)AccessTools.Property(typeof(StoryModeHeroes), "ElderBrother").GetValue(null);
                 brother.ChangeState(Hero.CharacterStates.Disabled);
                 //Believe this is line missed that is causing all the brother issues
-                StoryMode.StoryMode.Current.MainStoryLine.Brother.Clan = CampaignData.NeutralFaction;
+                brother.Clan = CampaignData.NeutralFaction;
 
 
                 StoryMode.StoryMode.Current.MainStoryLine.CompleteTutorialPhase(true);

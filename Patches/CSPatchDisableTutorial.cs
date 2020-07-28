@@ -6,7 +6,7 @@ using TaleWorlds.Core;
 using System.Reflection;
 using StoryMode;
 using StoryMode.Behaviors;
-using StoryMode.Behaviors.Quests.FirstPhase;
+using StoryMode.Behaviors.Quests.PlayerClanQuests;
 using StoryMode.StoryModePhases;
 using HarmonyLib;
 
