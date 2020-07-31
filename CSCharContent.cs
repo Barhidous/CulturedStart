@@ -48,7 +48,7 @@ namespace zCulturedStart
             //Kingdom Start
             TextObject shortdesc = new TextObject("", null);
             
-            TextObject fulldesc = new TextObject("With the support of companions you have gathered an army. With limited funds and food you decided it's time for action.", null);
+            TextObject fulldesc = new TextObject("{=CSd1g3T5AyE}With the support of companions you have gathered an army. With limited funds and food you decided it's time for action.", null);
 
             switch (CharacterCreationContent.Instance.Culture.StringId)
             {

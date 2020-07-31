@@ -8,6 +8,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.GameState;
+using TaleWorlds.CampaignSystem.SandBox;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
@@ -64,6 +65,16 @@ namespace zCulturedStart
             if (quest.StringId == "investigate_neretzes_banner_quest" && CSCharCreationOption.CSGameOption == 1)
             { 
                 AccessTools.Method(typeof(QuestBase), "CompleteQuestWithSuccess").Invoke(quest, null);
+            } 
+            if (quest.StringId == "main_storyline_create_kingdom_quest_1"|| quest.StringId == "main_storyline_create_kingdom_quest_0")
+            {
+                if (Clan.PlayerClan.Kingdom.RulingClan == Clan.PlayerClan){
+                    Type type = AccessTools.TypeByName("StoryMode.Behaviors.Quests.FirstPhase.CreateKingdomQuestBehavior+CreateKingdomQuest");
+                    JournalLog log = (JournalLog)AccessTools.Field(type, "_clanIndependenceRequirementLog").GetValue(quest);
+                    AccessTools.Field(type, "_hasPlayerCreatedKingdom").SetValue(quest, true);
+                    Object[] parameters = new object[] { log, 1 };
+                    AccessTools.Method(typeof(QuestBase), "UpdateQuestTaskStage").Invoke(quest, parameters);
+                }
             }
         }
         private void OnQuestCompleted(QuestBase quest, QuestBase.QuestCompleteDetails detail)
