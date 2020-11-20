@@ -63,7 +63,20 @@ namespace zCulturedStart
                 _CSLocationOption = value;
             }
         }
-
+        public static CultureObject SelectedCulture
+        {
+            get
+            {
+                return _SelectedCulture;
+            }
+            set
+            {
+                _SelectedCulture = value;
+            }
+        }
+        private static CultureObject _SelectedCulture;
+        public static List<CultureObject> AddtlCulturesList;
+        
         public static Settlement cultureSettlement(Hero hero)
         {
             //var result;

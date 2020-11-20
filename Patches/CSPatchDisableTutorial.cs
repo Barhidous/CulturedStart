@@ -24,9 +24,9 @@ namespace zCulturedStart
             //Combining multiple cleanup/complete logics that do not get called if you dont leave tutorial manually.
             CampaignEvents.RemoveListeners(Campaign.Current.GetCampaignBehavior<TutorialPhaseCampaignBehavior>());
             StoryModeEvents.RemoveListeners(Campaign.Current.GetCampaignBehavior<TutorialPhaseCampaignBehavior>());
-            if(StoryMode.StoryMode.Current.MainStoryLine.Brother != null ){ 
-            StoryMode.StoryMode.Current.MainStoryLine.Brother.ChangeState(Hero.CharacterStates.Disabled);
-            }
+            //if(StoryMode.StoryModeObjects.StoryModeHeroes. != null ){ 
+           //StoryMode.StoryMode.Current.MainStoryLine.Brother.ChangeState(Hero.CharacterStates.Disabled);
+            //}
             return false;
         }
         private readonly Type _rebuildPlayerClanQuest = typeof(RebuildPlayerClanQuestBehavior).GetNestedType("RebuildPlayerClanQuest", BindingFlags.NonPublic);

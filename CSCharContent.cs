@@ -33,7 +33,7 @@ namespace zCulturedStart
             characterCreationCategory.AddCategoryOption(new TextObject("{=13CHolsH}A budding caravanner", null), new List<SkillObject> { DefaultSkills.Trade }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(MerchantOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS4g3T5AyE}With what savings you could muster you purchased some mules and mercenaries", null), null, 0, 0, 0);
 
             //Exiled Start
-            characterCreationCategory.AddCategoryOption(new TextObject("{=14CHolsH} A noble of " + CharacterCreationContent.Instance.Culture.StringId + " in exile", null), new List<SkillObject> { DefaultSkills.Leadership }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSExileOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS5g3T5AyE}Forced into exile after your parents were executed for suspected treason. With only your family's bodyguard you set off. Should you return you'd be viewed as a criminal.", null), null, 0, 150, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=14CHolsH} A noble of " + CSCharCreationOption.SelectedCulture.StringId + " in exile", null), new List<SkillObject> { DefaultSkills.Leadership }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSExileOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS5g3T5AyE}Forced into exile after your parents were executed for suspected treason. With only your family's bodyguard you set off. Should you return you'd be viewed as a criminal.", null), null, 0, 150, 0);
 
             //Mercanary start            
             characterCreationCategory.AddCategoryOption(new TextObject("{=15CHolsH}In a failing mercenary company", null), new List<SkillObject> { DefaultSkills.Tactics }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(MercenaryOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS6g3T5AyE}With men deserting over lack of wages, your company leader was found, and you decided to take you chance and lead", null), null, 0, 50, 0);
@@ -42,7 +42,7 @@ namespace zCulturedStart
             characterCreationCategory.AddCategoryOption(new TextObject("{=16CHolsH}A looter lowlife.", null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSLooterOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS7g3T5AyE}Left impoverished from war, you found a group of like minded ruffians who desperate to get by", null), null, 0, 0, 0);
 
             //Vassal Start
-            characterCreationCategory.AddCategoryOption(new TextObject("{=17CHolsH} A new vassal of " + CharacterCreationContent.Instance.Culture, null), new List<SkillObject> { DefaultSkills.Steward }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSVassalOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS8g3T5AyE}A young noble who came into an arrangement with the king for a chance at land", null), null, 0, 150, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=17CHolsH} A new vassal of " + CSCharCreationOption.SelectedCulture.StringId, null), new List<SkillObject> { DefaultSkills.Steward }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSVassalOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS8g3T5AyE}A young noble who came into an arrangement with the king for a chance at land", null), null, 0, 150, 0);
 
 
             //Kingdom Start
@@ -50,7 +50,7 @@ namespace zCulturedStart
             
             TextObject fulldesc = new TextObject("{=CSd1g3T5AyE}With the support of companions you have gathered an army. With limited funds and food you decided it's time for action.", null);
 
-            switch (CharacterCreationContent.Instance.Culture.StringId)
+            switch (CSCharCreationOption.SelectedCulture.StringId)
             {
                 case "sturgia":
                     shortdesc = new TextObject("{=f6CSm3sP}Leading a Viking Expedition", null);       
@@ -72,6 +72,7 @@ namespace zCulturedStart
                     shortdesc = new TextObject("{=f2CSm3sP}Becoming a new Empire State", null);
                     break;
                 default:
+                    shortdesc = new TextObject("{=f2CSm3sP}Leading part of " + CSCharCreationOption.SelectedCulture.StringId, null);
                     break;
             }
             
@@ -82,10 +83,10 @@ namespace zCulturedStart
             characterCreationCategory.AddCategoryOption(Holdshortdesc, new List<SkillObject> { DefaultSkills.Leadership, DefaultSkills.Steward }, CharacterAttributesEnum.Social, 1, 15, 1, null, new CharacterCreationOnSelect(CSHoldingOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS8g3T5AyE}You acquired a castle through your own means and declared yourself a kingdom for better or worse.", null), null, 0, 351, 0);
 
             //Vassal castle start
-            characterCreationCategory.AddCategoryOption(new TextObject("{=17CHolsH} A landed vassal of " + CharacterCreationContent.Instance.Culture, null), new List<SkillObject> { DefaultSkills.Steward }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSCastleVassalOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS9g3T5AyE}A young noble who came into an arrangement with the king for land", null), null, 0, 150, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=17CHolsH} A landed vassal of " + CSCharCreationOption.SelectedCulture.StringId, null), new List<SkillObject> { DefaultSkills.Steward }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSCastleVassalOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS9g3T5AyE}A young noble who came into an arrangement with the king for land", null), null, 0, 150, 0);
 
             //Escape Prisoner start
-            characterCreationCategory.AddCategoryOption(new TextObject("{=18CHolsH} An escaped prsioner of a lord of " + CharacterCreationContent.Instance.Culture, null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSEscapeOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS10g3T5AyE}A poor prisoner of petty crimes who managed to break his shackles with a rock and fled", null), null, 0, 0, 0);
+            characterCreationCategory.AddCategoryOption(new TextObject("{=18CHolsH} An escaped prsioner of a lord of " + CSCharCreationOption.SelectedCulture.StringId, null), new List<SkillObject> { DefaultSkills.Roguery }, 0, 1, 10, 0, null, new CharacterCreationOnSelect(CSEscapeOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS10g3T5AyE}A poor prisoner of petty crimes who managed to break his shackles with a rock and fled", null), null, 0, 0, 0);
 
             characterCreation.AddNewMenu(characterCreationMenu);
         }
@@ -143,7 +144,7 @@ namespace zCulturedStart
             //Doing this to add menus late to allow previous selections to work. But have to make sure it's not already added. No good way in menu class so forced to use text
             TextObject backstory;
             TextObject backstory2;           
-            backstory = new TextObject("{=jg3T5AyE} Along the way, the inn at which you were staying was attacked by raiders. Your parents were slain and your two youngest siblings seized, but you and your brother survived because...", null);            
+            backstory = new TextObject("{=jg3T5AyE}Like many families in Calradia, your life was upended by war. Your home was ravaged by the passage of army after army. Eventually, you sold your property and set off with your father, mother, brother, and your two younger siblings to a new town you'd heard was safer. But you did not make it. Along the way, the inn at which you were staying was attacked by raiders. Your parents were slain and your two youngest siblings seized, but you and your brother survived because...", null);            
             backstory2 = new TextObject("{=jg3T5AyE} During your journies you were ambushed by raiders you survived because...", null);
             
             List<CharacterCreationMenu> CurMenus = (List<CharacterCreationMenu>)AccessTools.Field(typeof(CharacterCreation), "CharacterCreationMenu").GetValue(characterCreation);
@@ -181,7 +182,9 @@ namespace zCulturedStart
         private static void GameOptionOnInit(CharacterCreation characterCreation)
         {
             List<CharacterCreationMenu> CurMenus = (List<CharacterCreationMenu>)AccessTools.Field(typeof(CharacterCreation), "CharacterCreationMenu").GetValue(characterCreation);
-            bool loaded = false;
+            bool loaded = false;         
+                      
+            
             foreach (CharacterCreationMenu x in CurMenus)
             {
                 if (x.Text.ToString() == "Who are you in Caldaria...")
@@ -195,6 +198,68 @@ namespace zCulturedStart
                 AddStartOption(characterCreation);
             }
 
+            
+            
+        }
+        public static void AddtlCultures(CharacterCreation characterCreation)
+        {
+            List<string> gamecultures = new List<string>() { "sturgia", "aserai","vlandia","battania","khuzait","empire"};
+            CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=CS1eA0WW}Mod Cultures", null), new TextObject("{=5g3T5AyE}Additional Cultures From Mods", null), new CharacterCreationOnInit(AddtlCulturesOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
+            CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(null);
+            List<CultureObject> AddtlCulturesList = new List<CultureObject>();
+            foreach (CultureObject cultureObject in MBObjectManager.Instance.GetObjectTypeList<CultureObject>())
+            {
+                if (cultureObject.IsMainCulture)
+                {
+                    if (!gamecultures.Contains(cultureObject.StringId))
+                    {
+                        characterCreationCategory.AddCategoryOption(cultureObject.Name, new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(CSAddtCultureOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), cultureObject.EncyclopediaText, null, 0, 0, 0);
+                        AddtlCulturesList.Add(cultureObject);
+                    }
+                }
+            }
+            characterCreationCategory.AddCategoryOption(new TextObject("{=CS13HolsH}None"), new List<SkillObject> { DefaultSkills.Roguery }, 0, 0, 0, 0, null, new CharacterCreationOnSelect(CSAddtDonothingOnConsequence), new CharacterCreationApplyFinalEffects(CSDoNothingOnApply), new TextObject("{=CS14HolsH}Will use original selection"), null, 0, 0, 0);
+            characterCreation.AddNewMenu(characterCreationMenu);
+            CSCharCreationOption.AddtlCulturesList = AddtlCulturesList;                       
+        }
+
+        private static void CSAddtCultureOnConsequence(CharacterCreation characterCreation)
+        {
+            int test2 = 0;
+            List<CharacterCreationMenu> CurMenus = (List<CharacterCreationMenu>)AccessTools.Field(typeof(CharacterCreation), "CharacterCreationMenu").GetValue(characterCreation);
+            foreach (CharacterCreationMenu x in CurMenus)
+            {
+                if (x.Text.ToString() == "Additional Cultures From Mods")
+                {
+                    test2 = x.SelectedOptions.First();
+                    test2 = test2 - 1;//First returns base 1                    
+                    break;
+                }
+            };           
+            
+            CSCharCreationOption.SelectedCulture = CSCharCreationOption.AddtlCulturesList[(test2)];
+        }
+        private static void CSAddtDonothingOnConsequence(CharacterCreation characterCreation)
+        {
+            CSCharCreationOption.SelectedCulture = CharacterCreationContent.Instance.Culture;
+        }
+        private static void AddtlCulturesOnInit(CharacterCreation characterCreation)
+        {
+            //List<CharacterCreationMenu> CurMenus = (List<CharacterCreationMenu>)AccessTools.Field(typeof(CharacterCreation), "CharacterCreationMenu").GetValue(characterCreation);
+            //bool loaded = false;
+            CSCharCreationOption.SelectedCulture = CharacterCreationContent.Instance.Culture;
+            //foreach (CharacterCreationMenu x in CurMenus)
+            //{
+            //    if (x.Text.ToString() == "How do you want to handle your Quests")
+            //    {
+            //        loaded = true;
+            //        break;
+            //    }
+            //};
+            //if (!loaded)
+            //{
+            //    AddStartOption(characterCreation);
+            //}
         }
         private static void FPDefaultOnConsequence(CharacterCreation characterCreation)
         {

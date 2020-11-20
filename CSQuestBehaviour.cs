@@ -24,6 +24,7 @@ namespace zCulturedStart
             StoryModeEvents.OnCharacterCreationIsOverEvent.AddNonSerializedListener(this, new Action(this.OnCharacterCreationIsOver));
             CampaignEvents.OnQuestCompletedEvent.AddNonSerializedListener(this, new Action<QuestBase, QuestBase.QuestCompleteDetails>(this.OnQuestCompleted));
             CampaignEvents.OnQuestStartedEvent.AddNonSerializedListener(this, new Action<QuestBase>(this.OnQuestStarted));
+            
         }
         public override void SyncData(IDataStore dataStore)
         {
@@ -68,12 +69,14 @@ namespace zCulturedStart
             } 
             if (quest.StringId == "main_storyline_create_kingdom_quest_1"|| quest.StringId == "main_storyline_create_kingdom_quest_0")
             {
-                if (Clan.PlayerClan.Kingdom.RulingClan == Clan.PlayerClan){
-                    Type type = AccessTools.TypeByName("StoryMode.Behaviors.Quests.FirstPhase.CreateKingdomQuestBehavior+CreateKingdomQuest");
-                    JournalLog log = (JournalLog)AccessTools.Field(type, "_clanIndependenceRequirementLog").GetValue(quest);
-                    AccessTools.Field(type, "_hasPlayerCreatedKingdom").SetValue(quest, true);
-                    Object[] parameters = new object[] { log, 1 };
-                    AccessTools.Method(typeof(QuestBase), "UpdateQuestTaskStage").Invoke(quest, parameters);
+                if (Clan.PlayerClan.Kingdom != null) { 
+                    if (Clan.PlayerClan.Kingdom.RulingClan == Clan.PlayerClan){
+                        Type type = AccessTools.TypeByName("StoryMode.Behaviors.Quests.FirstPhase.CreateKingdomQuestBehavior+CreateKingdomQuest");
+                        JournalLog log = (JournalLog)AccessTools.Field(type, "_clanIndependenceRequirementLog").GetValue(quest);
+                        AccessTools.Field(type, "_hasPlayerCreatedKingdom").SetValue(quest, true);
+                        Object[] parameters = new object[] { log, 1 };
+                        AccessTools.Method(typeof(QuestBase), "UpdateQuestTaskStage").Invoke(quest, parameters);
+                    }
                 }
             }
         }

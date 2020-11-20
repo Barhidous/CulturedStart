@@ -25,8 +25,13 @@ namespace zCulturedStart
         {
             //Take away all the stuff to apply to each option
             GiveGoldAction.ApplyBetweenCharacters(Hero.MainHero, null, Hero.MainHero.Gold, true);
-            PartyBase.MainParty.ItemRoster.RemoveAllItems();
+            PartyBase.MainParty.ItemRoster.Clear();
             int Option = CSCharCreationOption.CSSelectOption;
+            if (CSCharCreationOption.SelectedCulture != null)
+            {
+                Hero.MainHero.Culture = CSCharCreationOption.SelectedCulture;
+                Clan.PlayerClan.Culture = CSCharCreationOption.SelectedCulture;
+            };
             Settlement Castle;
             switch (Option) {
                 case 1: //Default
@@ -83,7 +88,7 @@ namespace zCulturedStart
                     CSAddTroop(3, 14, PartyBase.MainParty);
                     CSAddTroop(4, 10, PartyBase.MainParty);
                     CSAddTroop(5, 6, PartyBase.MainParty);
-                    CSCreateKingdom();
+                    //CSCreateKingdom();
                     CSSetEquip(Hero.MainHero, 5);
                     Hero.MainHero.Clan.Influence = 100;
                     CSAddCompanionAsArmy(2);
@@ -100,7 +105,7 @@ namespace zCulturedStart
                     CSAddTroop(3, 14, PartyBase.MainParty);
                     CSAddTroop(4, 10, PartyBase.MainParty);
                     CSAddTroop(5, 6, PartyBase.MainParty);
-                    CSCreateKingdom();
+                    //CSCreateKingdom();
                     CSSetEquip(Hero.MainHero, 5);
                     CSAddCompanionAsArmy(1);
 
@@ -122,6 +127,8 @@ namespace zCulturedStart
                 default:
                     break;
             }
+            //Culture swap
+            
         }
         public static void CSSetEquip(Hero hero, int tier)
         {
@@ -175,7 +182,7 @@ namespace zCulturedStart
         {//This is from cheat, works but not thourughly tested
             Kingdom kingdom = MBObjectManager.Instance.CreateObject<Kingdom>("player_kingdom");
             TextObject textObject = new TextObject("{=yGaGlXgQ}Player Kingdom", null);
-            kingdom.InitializeKingdom(textObject, textObject, Clan.PlayerClan.Culture, Clan.PlayerClan.Banner, Clan.PlayerClan.Color, Clan.PlayerClan.Color2, MobileParty.MainParty.Position2D);
+            kingdom.InitializeKingdom(textObject, textObject, Clan.PlayerClan.Culture, Clan.PlayerClan.Banner, Clan.PlayerClan.Color, Clan.PlayerClan.Color2, cultureSettlement(Clan.PlayerClan.Culture.StringId));
             ChangeKingdomAction.ApplyByJoinToKingdom(Clan.PlayerClan, kingdom, true);
             kingdom.RulingClan = Clan.PlayerClan;
             //Fix for basegame bug of influence not being gained until loaded again
@@ -191,7 +198,13 @@ namespace zCulturedStart
             Castle = (from settlement in Settlement.All
                       where settlement.Culture == Hero.MainHero.Culture && settlement.IsCastle
                       select settlement).GetRandomElement<Settlement>();
-            ChangeOwnerOfSettlementAction.ApplyBySiege(Hero.MainHero, Hero.MainHero, Castle);
+            if (Castle == null) //Adding this for custom cultures that don't have any land to start
+            {
+                Castle = (from settlement in Settlement.All
+                          where settlement.IsCastle
+                          select settlement).GetRandomElement<Settlement>();
+            }
+            ChangeOwnerOfSettlementAction.ApplyByKingDecision(Hero.MainHero, Castle);
             if (CSCharCreationOption.CSLocationOption == 8)
             {
                 MobileParty.MainParty.Position2D = Castle.GatePosition;
@@ -259,10 +272,12 @@ namespace zCulturedStart
             //Find a clan that matches culture
             string culture = hero.Culture.StringId;
             Hero lord = Hero.FindAll((Hero tmp) => (tmp.Culture.StringId == hero.Culture.StringId) && tmp.IsAlive && tmp.IsFactionLeader && !tmp.MapFaction.IsMinorFaction).GetRandomElement<Hero>();
-            Clan targetclan = lord.Clan;
-            CharacterRelationManager.SetHeroRelation(hero, lord, 10);
-            ChangeKingdomAction.ApplyByJoinToKingdom(hero.Clan, targetclan.Kingdom, false);
-            GainKingdomInfluenceAction.ApplyForJoiningFaction(hero, 10f);
+            if(lord != null) { //Adding to prevent crash on custom cultures with no kingdom
+                Clan targetclan = lord.Clan;
+                CharacterRelationManager.SetHeroRelation(hero, lord, 10);
+                ChangeKingdomAction.ApplyByJoinToKingdom(hero.Clan, targetclan.Kingdom, false);
+                GainKingdomInfluenceAction.ApplyForJoiningFaction(hero, 10f);
+            }
 
         }
         public static void CSAddTroop(int Tier, int num, PartyBase partyBase)

@@ -78,6 +78,8 @@ namespace zCulturedStart
         private static void OpenBannerSelectionScreen()
         {
             Game.Current.GameStateManager.PushState(Game.Current.GameStateManager.CreateState<BannerEditorState>(), 0);
+            
+            
         }
     }
     
