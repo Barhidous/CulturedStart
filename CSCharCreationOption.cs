@@ -10,7 +10,8 @@ using TaleWorlds.ObjectSystem;
 using TaleWorlds.SaveSystem;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
-using StoryMode.CharacterCreationSystem;
+using StoryMode.CharacterCreationContent;
+using TaleWorlds.CampaignSystem.CharacterCreationContent;
 
 namespace zCulturedStart
 {
@@ -126,7 +127,7 @@ namespace zCulturedStart
         {
             //var result;
             
-            return Settlement.FindAll((Settlement x) => x.IsTown).GetRandomElement<Settlement>();
+            return Settlement.FindAll((Settlement x) => x.IsTown).GetRandomElementInefficiently<Settlement>();
             
         }
 

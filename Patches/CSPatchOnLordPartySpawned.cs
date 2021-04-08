@@ -7,7 +7,7 @@ using StoryMode;
 using StoryMode.Behaviors;
 using StoryMode.Behaviors.Quests.FirstPhase;
 using StoryMode.StoryModePhases;
-using StoryMode.CharacterCreationSystem;
+
 using TaleWorlds.Localization;
 using HarmonyLib;
 

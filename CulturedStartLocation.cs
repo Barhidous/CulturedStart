@@ -30,14 +30,14 @@ namespace zCulturedStart
         private static bool Prefix(TrainingFieldCampaignBehavior __instance)
         {
             if (!CultureStartOptions.FreePlayLoadedOnCondition()) {                
-                foreach (CharacterObject troop in PartyBase.MainParty.MemberRoster.Troops.ToList<CharacterObject>())
-                {
-                    if (!troop.IsPlayerCharacter)
-                    {
-                        PartyBase.MainParty.MemberRoster.RemoveTroop(troop, 1, default(UniqueTroopDescriptor), 0);
+                //foreach (CharacterObject troop in PartyBase.MainParty.MemberRoster..ToList<CharacterObject>())
+                //{
+                   // if (!troop.IsPlayerCharacter)
+                   // {
+                    //    PartyBase.MainParty.MemberRoster.RemoveTroop(troop, 1, default(UniqueTroopDescriptor), 0);
                         
-                    }
-                }                
+                   // }
+               // }                
                 //Setting Various extra values to try and match usual complete tutorial phase to make sure events fire.
                 AccessTools.Field(typeof(TrainingFieldCampaignBehavior), "_talkedWithBrotherForTheFirstTime").SetValue(__instance, true);
                 TutorialPhase.Instance.PlayerTalkedWithBrotherForTheFirstTime();

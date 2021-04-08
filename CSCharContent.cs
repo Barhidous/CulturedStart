@@ -10,7 +10,8 @@ using TaleWorlds.ObjectSystem;
 using TaleWorlds.Library;
 using System.Reflection;
 using StoryMode;
-using StoryMode.CharacterCreationSystem;
+using StoryMode.CharacterCreationContent;
+using TaleWorlds.CampaignSystem.CharacterCreationContent;
 using HarmonyLib;
 using TaleWorlds.Localization;
 using TaleWorlds.Engine.Screens;
@@ -23,7 +24,9 @@ namespace zCulturedStart
         public static void AddStartOption(CharacterCreation characterCreation)
         {
             //Default option CSDefault
-            
+            if (CSCharCreationOption.SelectedCulture == null || CSCharCreationOption.SelectedCulture != CharacterCreationContentBase.Instance.GetSelectedCulture()) {
+                CSCharCreationOption.SelectedCulture = CharacterCreationContentBase.Instance.GetSelectedCulture();
+             }
             CharacterCreationMenu characterCreationMenu = new CharacterCreationMenu(new TextObject("{=1eNBA0WW}Story Background", null), new TextObject("{=5g3T5AyE}Who are you in Caldaria...", null), new CharacterCreationOnInit(BranchsOnInit), CharacterCreationMenu.MenuTypes.MultipleChoice);
 
             CharacterCreationCategory characterCreationCategory = characterCreationMenu.AddMenuCategory(null);
@@ -159,7 +162,7 @@ namespace zCulturedStart
             };
             if (!loaded)
             {
-                CharacterCreationContent.Instance.GetType().GetMethod("AddEscapeMenu", BindingFlags.NonPublic | BindingFlags.Static).Invoke(CharacterCreationContent.Instance, new object[] { characterCreation });
+                StoryModeCharacterCreationContent.Instance.GetType().GetMethod("AddEscapeMenu", BindingFlags.NonPublic | BindingFlags.Static).Invoke(StoryModeCharacterCreationContent.Instance, new object[] { characterCreation });
             }
 
         }
@@ -241,13 +244,13 @@ namespace zCulturedStart
         }
         private static void CSAddtDonothingOnConsequence(CharacterCreation characterCreation)
         {
-            CSCharCreationOption.SelectedCulture = CharacterCreationContent.Instance.Culture;
+            CSCharCreationOption.SelectedCulture = CharacterCreationContentBase.Instance.GetSelectedCulture();
         }
         private static void AddtlCulturesOnInit(CharacterCreation characterCreation)
         {
             //List<CharacterCreationMenu> CurMenus = (List<CharacterCreationMenu>)AccessTools.Field(typeof(CharacterCreation), "CharacterCreationMenu").GetValue(characterCreation);
             //bool loaded = false;
-            CSCharCreationOption.SelectedCulture = CharacterCreationContent.Instance.Culture;
+            CSCharCreationOption.SelectedCulture = CharacterCreationContentBase.Instance.GetSelectedCulture();
             //foreach (CharacterCreationMenu x in CurMenus)
             //{
             //    if (x.Text.ToString() == "How do you want to handle your Quests")

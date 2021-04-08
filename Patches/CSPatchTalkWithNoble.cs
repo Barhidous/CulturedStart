@@ -7,7 +7,7 @@ using System.Reflection;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using StoryMode.Behaviors.Quests.FirstPhase;
-using StoryMode.CharacterCreationSystem;
+
 using TaleWorlds.Localization;
 using HarmonyLib;
 

@@ -5,7 +5,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Localization;
 using TaleWorlds.Core;
 using System.Collections.Generic;
-using StoryMode.CharacterCreationSystem;
+
 
 namespace zCulturedStart.Patches
 {

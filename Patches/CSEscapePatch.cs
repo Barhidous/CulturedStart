@@ -8,14 +8,15 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.ObjectSystem;
 using StoryMode;
-using StoryMode.CharacterCreationSystem;
+using StoryMode.CharacterCreationContent;
+using TaleWorlds.CampaignSystem.CharacterCreationContent;
 using StoryMode.StoryModeObjects;
 using TaleWorlds.Localization;
 using HarmonyLib;
 
 namespace zCulturedStart
 {
-    [HarmonyPatch(typeof(CharacterCreationContent), "EscapeOnInit")]
+    [HarmonyPatch(typeof(StoryModeCharacterCreationContent), "EscapeOnInit")]
     class CSEscapePatch
     {
         private static bool Prefix(CharacterCreation characterCreation)

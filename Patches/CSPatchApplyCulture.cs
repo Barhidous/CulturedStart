@@ -9,21 +9,22 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using StoryMode;
 using Helpers;
-using StoryMode.CharacterCreationSystem;
+using StoryMode.CharacterCreationContent;
+using TaleWorlds.CampaignSystem.CharacterCreationContent;
 namespace zCulturedStart
 {
-    [HarmonyPatch(typeof(CharacterCreationContent), "ApplyCulture")]
-    class CSPatchApplyCulture
-    {
-        private static bool Prefix(CharacterCreation characterCreation)
-        {
-            CharacterObject.PlayerCharacter.Culture = CharacterCreationContent.Instance.Culture;
-            Clan.PlayerClan.Culture = CharacterCreationContent.Instance.Culture;
-            Settlement settlement = CSCharCreationOption.cultureSettlement(Hero.MainHero);
-            Clan.PlayerClan.UpdateHomeSettlement(settlement);
-            Hero.MainHero.BornSettlement = Clan.PlayerClan.HomeSettlement;
-            
-            return false;
-        }
-    }
+    //[HarmonyPatch(typeof(CharacterCreationContentBase), "ApplyCulture")]
+   // {
+    //Is Fucked, dont think i actually need this anymore. 
+       // private static bool Prefix(CharacterCreation characterCreation)
+      //  {
+         //   CharacterObject.PlayerCharacter.Culture = CharacterCreationContentBase.Instance.GetSelectedCulture();
+          //  Clan.PlayerClan.Culture = CharacterCreationContentBase.Instance.GetSelectedCulture();
+          //  Settlement settlement = CSCharCreationOption.cultureSettlement(Hero.MainHero);
+          //  Clan.PlayerClan.UpdateHomeSettlement(settlement);
+          //  Hero.MainHero.BornSettlement = Clan.PlayerClan.HomeSettlement;
+          //  CharacterCreationContentBase.Instance.
+          //  return false;
+        //}
+  //  }
 }
