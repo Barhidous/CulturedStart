@@ -9,7 +9,14 @@ using TaleWorlds.Localization;
 using StoryMode.Behaviors.Quests.FirstPhase;
 using System.Reflection;
 using zCulturedStart.Patches;
-
+using TaleWorlds.Core;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.GameState;
+using TaleWorlds.Library;
+using StoryMode;
+using StoryMode.Behaviors;
+using StoryMode.StoryModePhases;
+using StoryMode.StoryModeObjects;
 
 namespace zCulturedStart
 {

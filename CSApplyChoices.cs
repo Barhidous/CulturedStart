@@ -7,6 +7,7 @@ using TaleWorlds.CampaignSystem;
 using MountAndBlade.CampaignBehaviors;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.Core;
+using TaleWorlds.Core;
 using TaleWorlds.Library;
 using Helpers;
 using HarmonyLib;
@@ -14,9 +15,10 @@ using System.Reflection;
 using StoryMode;
 using StoryMode.Behaviors.Quests.FirstPhase;
 using StoryMode.CharacterCreationContent;
-using TaleWorlds.CampaignSystem.CharacterCreationContent;
-using TaleWorlds.Localization;
+using TaleWorlds.CampaignSystem.CharacterDevelopment;
 using TaleWorlds.ObjectSystem;
+using TaleWorlds.Localization;
+
 
 namespace zCulturedStart
 {
@@ -136,41 +138,41 @@ namespace zCulturedStart
             SkillObject HBestSkill1; SkillObject HBestSkill2; SkillObject HBestSkill3;
             Dictionary<SkillObject, int> HeroSkills = new Dictionary<SkillObject, int>();
             CharacterSkills skills = (CharacterSkills)AccessTools.Field(typeof(Hero), "_heroSkills").GetValue(hero);
-                //hero.GetHeroSkills();
+            //hero.GetHeroSkills();
+            /*
+                        foreach (SkillObject skill in (from s in SkillObject.All
+                                                       where s.IsPersonalSkill
+                                                       group s by s.CharacterAttribute.Id).SelectMany((IGrouping<MBGUID, SkillObject> s) => s).ToList<SkillObject>())
+                        {
+                            HeroSkills.Add(skill, skills.GetPropertyValue(skill)); //Add All the heros personal skills
+                        }
+                        HeroSkills.OrderByDescending(x => x.Value);//Sorts dictionary by highest skills    
+                        foreach (SkillObject skill in HeroSkills.Keys)
+                        {
 
-            foreach (SkillObject skill in (from s in SkillObject.All
-                                           where s.IsPersonalSkill
-                                           group s by s.CharacterAttribute.Id).SelectMany((IGrouping<MBGUID, SkillObject> s) => s).ToList<SkillObject>())
-            {
-                HeroSkills.Add(skill, skills.GetPropertyValue(skill)); //Add All the heros personal skills
-            }
-            HeroSkills.OrderByDescending(x => x.Value);//Sorts dictionary by highest skills    
-            foreach (SkillObject skill in HeroSkills.Keys)
-            {
+                        }
+                        List<CharacterObject> CharOptions = (from y in CharacterObject.All //Gets all possible troop options
+                                                             where y.Tier == tier && y.Culture.StringId == hero.Culture.StringId && !y.IsHero
+                                                             select y).ToList();
+                        CharOptions.Shuffle<CharacterObject>(); //shuffling to make it so there is still some possiblity of random. So x Cultue + x skill combo doesn't always get same
+                        CharacterObject IdealTroop = null;
+                        float ratio1 = 0; float ratio2 = 0; float ratio3 = 0; float ratiocur;
 
-            }
-            List<CharacterObject> CharOptions = (from y in CharacterObject.All //Gets all possible troop options
-                                                 where y.Tier == tier && y.Culture.StringId == hero.Culture.StringId && !y.IsHero
-                                                 select y).ToList();
-            CharOptions.Shuffle<CharacterObject>(); //shuffling to make it so there is still some possiblity of random. So x Cultue + x skill combo doesn't always get same
+
+                        foreach (CharacterObject character in CharOptions) //Loop them and figure out which is the best option
+                        {
+                            Dictionary<SkillObject, int> troopskills = new Dictionary<SkillObject, int>();
+                            foreach (SkillObject troopskill in (from t in SkillObject.
+                                                                where t.IsPersonalSkill
+                                                                group t by t.CharacterAttribute.Id).SelectMany((IGrouping<MBGUID, SkillObject> t) => t).ToList<SkillObject>())
+                            {
+                                troopskills.Add(troopskill, character.GetSkillValue(troopskill));
+                            }
+
+            */
+
             CharacterObject IdealTroop = null;
-            float ratio1 = 0; float ratio2 = 0; float ratio3 = 0; float ratiocur;
-
-
-            foreach (CharacterObject character in CharOptions) //Loop them and figure out which is the best option
-            {
-                Dictionary<SkillObject, int> troopskills = new Dictionary<SkillObject, int>();
-                foreach (SkillObject troopskill in (from t in SkillObject.All
-                                                    where t.IsPersonalSkill
-                                                    group t by t.CharacterAttribute.Id).SelectMany((IGrouping<MBGUID, SkillObject> t) => t).ToList<SkillObject>())
-                {
-                    troopskills.Add(troopskill, character.GetSkillValue(troopskill));
-                }
-
-
-
-
-            }
+        
             if (IdealTroop == null) //Fall back if idea troop logic fails
             {
                 IdealTroop = (from y in CharacterObject.All
@@ -185,16 +187,16 @@ namespace zCulturedStart
         {//This is from cheat, works but not thourughly tested
             Kingdom kingdom = MBObjectManager.Instance.CreateObject<Kingdom>("player_kingdom");
             TextObject textObject = new TextObject("{=yGaGlXgQ}Player Kingdom", null);
-            kingdom.InitializeKingdom(textObject, textObject, Clan.PlayerClan.Culture, Clan.PlayerClan.Banner, Clan.PlayerClan.Color, Clan.PlayerClan.Color2, cultureSettlement(Clan.PlayerClan.Culture.StringId));
+            kingdom.InitializeKingdom(textObject, textObject, Clan.PlayerClan.Culture, Clan.PlayerClan.Banner, Clan.PlayerClan.Color, Clan.PlayerClan.Color2, CSOptionSettlement());
             ChangeKingdomAction.ApplyByJoinToKingdom(Clan.PlayerClan, kingdom, true);
             kingdom.RulingClan = Clan.PlayerClan;
             //Fix for basegame bug of influence not being gained until loaded again
-            if (!Kingdom.All.Contains(MobileParty.MainParty.MapFaction))//Checking to see if devs fix, so it hopefully doesnt break on update
+            /*if (!Kingdom.All.Contains(MobileParty.MainParty.MapFaction))//Checking to see if devs fix, so it hopefully doesnt break on update
             {
                 List<Kingdom> curkingdoms = new List<Kingdom>(Campaign.Current.Kingdoms.ToList());
                 curkingdoms.Add(kingdom);
                 AccessTools.Field(Campaign.Current.GetType(), "_kingdoms").SetValue(Campaign.Current, new MBReadOnlyList<Kingdom>(curkingdoms));
-            }
+            }*/
         }
         public static void CSGiveCastle(out Settlement Castle)
         {

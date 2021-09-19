@@ -64,6 +64,21 @@ namespace zCulturedStart
                 _CSLocationOption = value;
             }
         }
+
+        public static int CSSandboxToggle //0= Story 1 = Sandbox
+        {
+            get
+            {
+                return _CSSandboxToggle;
+            }
+            set
+            {
+                _CSSandboxToggle = value;
+            }
+        }
+
+        private static int _CSSandboxToggle;
+
         public static CultureObject SelectedCulture
         {
             get
@@ -123,6 +138,8 @@ namespace zCulturedStart
 
             }
         }
+
+
         public static Settlement RandcultureSettlement()
         {
             //var result;

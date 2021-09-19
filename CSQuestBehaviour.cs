@@ -11,6 +11,7 @@ using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.CampaignSystem.SandBox;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
+using Helpers;
 using TaleWorlds.Localization;
 using HarmonyLib;
 
@@ -34,7 +35,7 @@ namespace zCulturedStart
         
         public void OnCharacterCreationIsOver()
         {
-                      
+                   
 
         }
         public static Vec2 GetSettlementLoc(Settlement settlement) //This is to get the vector of a HC settlement...Possible Todo Home town
@@ -43,7 +44,9 @@ namespace zCulturedStart
         }
         private static void SelectClanName()
         {
-            InformationManager.ShowTextInquiry(new TextInquiryData(new TextObject("{=JJiKk4ow}Select your family name: ", null).ToString(), string.Empty, true, false, GameTexts.FindText("str_done", null).ToString(), null, new Action<string>(OnChangeClanNameDone), null, false, new Func<string, bool>(IsNewClanNameApplicable), ""), false);
+            
+            InformationManager.ShowTextInquiry(new TextInquiryData(new TextObject("{=JJiKk4ow}Select your family name: ", null).ToString(), string.Empty, true, false, GameTexts.FindText("str_done", null).ToString(), null, new Action<string>(OnChangeClanNameDone), null, false, new Func<string, Tuple<bool, string>>(FactionHelper.IsClanNameApplicable), "", ""), false);
+
         }
         private static bool IsNewClanNameApplicable(string input)
         {

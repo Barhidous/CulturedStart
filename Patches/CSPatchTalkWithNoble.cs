@@ -30,7 +30,7 @@ namespace zCulturedStart
             }
             if (CSCharCreationOption.CSGameOption == 2)
             {
-                CampaignEvents.RemoveListeners(__instance);
+                //CampaignEvents.RemoveListeners(__instance);
             }
         }
    }

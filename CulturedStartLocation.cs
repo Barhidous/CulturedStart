@@ -11,6 +11,7 @@ using TaleWorlds.CampaignSystem.GameState;
 using TaleWorlds.Library;
 using System.Reflection;
 using HarmonyLib;
+using Helpers;
 using StoryMode;
 using StoryMode.Behaviors;
 using StoryMode.StoryModePhases;
@@ -60,9 +61,9 @@ namespace zCulturedStart
             return false;
         }
         
-        private static void SelectClanName()
+        public static void SelectClanName()
         {
-            InformationManager.ShowTextInquiry(new TextInquiryData(new TextObject("{=JJiKk4ow}Select your family name: ", null).ToString(), string.Empty, true, false, GameTexts.FindText("str_done", null).ToString(), null, new Action<string>(OnChangeClanNameDone), null, false, new Func<string, bool>(IsNewClanNameApplicable), ""), false);
+            InformationManager.ShowTextInquiry(new TextInquiryData(new TextObject("{=JJiKk4ow}Select your family name: ", null).ToString(), string.Empty, true, false, GameTexts.FindText("str_done", null).ToString(), null, new Action<string>(OnChangeClanNameDone), null, false, new Func<string, Tuple<bool, string>>(FactionHelper.IsClanNameApplicable), "", ""), false);
         }
         private static bool IsNewClanNameApplicable(string input)
         {

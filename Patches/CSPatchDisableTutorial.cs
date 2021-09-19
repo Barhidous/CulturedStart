@@ -17,12 +17,13 @@ namespace zCulturedStart
     {
         private static bool Prefix(MainStoryLine __instance, bool isSkipped)
         {
-            
-            __instance.TutorialPhase.GetType().GetMethod("CompleteTutorial", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance.TutorialPhase, new object[] { isSkipped });
+            TutorialPhase.Instance.CompleteTutorial(true);
+            //__instance.TutorialPhase.GetType().GetMethod("CompleteTutorial", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance.TutorialPhase, new object[] { isSkipped });
             CSOnStoryModeEnded();
             __instance.GetType().GetProperty("FirstPhase").SetValue(__instance, new FirstPhase());
             //Combining multiple cleanup/complete logics that do not get called if you dont leave tutorial manually.
-            CampaignEvents.RemoveListeners(Campaign.Current.GetCampaignBehavior<TutorialPhaseCampaignBehavior>());
+            //Object Obj = Campaign.Current.GetCampaignBehavior<TutorialPhaseCampaignBehavior>()
+            //CampaignEvents.RemoveListeners(Obj);
             StoryModeEvents.RemoveListeners(Campaign.Current.GetCampaignBehavior<TutorialPhaseCampaignBehavior>());
             //if(StoryMode.StoryModeObjects.StoryModeHeroes. != null ){ 
            //StoryMode.StoryMode.Current.MainStoryLine.Brother.ChangeState(Hero.CharacterStates.Disabled);
@@ -54,8 +55,9 @@ namespace zCulturedStart
             }
             else
             {
-                MbEvent mbEvent = (MbEvent)Traverse.Create(StoryModeEvents.Instance).Field("_onStoryModeTutorialEndedEvent").GetValue();
-                mbEvent.Invoke();
+
+               // MbEvent mbEvent = (MbEvent)StoryModeEvents.OnStoryModeTutorialEndedEvent;
+                //mbEvent.Invoke();
             }
             
             

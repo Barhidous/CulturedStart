@@ -213,6 +213,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSApplyChoices.cs" />
+    <Compile Include="Patches\CSPatchSandbox.cs" />
+    <Compile Include="Patches\CSPatchSandboxAddMenus.cs" />
     <Compile Include="Patches\CSPatchBannerVMDone.cs" />
     <Compile Include="SkillScreen\CSScreenData.cs" />
     <Compile Include="SkillScreen\CSSkillScreen.cs" />
